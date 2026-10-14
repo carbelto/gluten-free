@@ -1,0 +1,188 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-10-14T07:48:01Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3634558545",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "cuisine": "pizza",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "indoor_seating": "yes",
+        "name": "Domino's",
+        "opening_hours": "Mo-Su 11:00-22:00",
+        "outdoor_seating": "yes",
+        "payment:bancontact": "yes",
+        "payment:cash": "yes",
+        "payment:maestro": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2195105,
+          51.1976622
+        ]
+      },
+      "id": "node/3634558545"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4194392771",
+        "addr:city": "Brugge",
+        "addr:housenumber": "12",
+        "addr:postcode": "8000",
+        "addr:street": "'t Zand",
+        "amenity": "restaurant",
+        "cuisine": "international",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:meat": "yes",
+        "diet:vegan": "limited",
+        "diet:vegetarian": "yes",
+        "email": "info@nomadbrugge.be",
+        "indoor_seating": "yes",
+        "name": "Nomad",
+        "opening_hours": "Mo-Fr 09:00-18:00; Sa 08:00-18:00; PH off",
+        "outdoor_seating": "yes",
+        "phone": "+32 50 73 64 88",
+        "reservation": "yes",
+        "website": "https://www.nomadbrugge.be/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2181404,
+          51.2057606
+        ]
+      },
+      "id": "node/4194392771"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6248043471",
+        "addr:housenumber": "124",
+        "addr:street": "Oostmeers",
+        "amenity": "restaurant",
+        "contact:email": "info@stoepa.be",
+        "contact:phone": "+32 50 33 04 54",
+        "contact:website": "https://www.stoepa.be",
+        "cuisine": "local",
+        "diet:gluten_free": "yes",
+        "diet:vegetarian": "yes",
+        "name": "De Stoepa",
+        "opening_hours": "Tu-Sa 12:00-14:00,18:00-24:00; Su 12:00-15:00,18:00-23:00",
+        "outdoor_seating": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2204244,
+          51.2002612
+        ]
+      },
+      "id": "node/6248043471"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6452473786",
+        "amenity": "fast_food",
+        "cuisine": "burger",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "name": "Bohemian Burgers",
+        "opening_hours": "Mo-Th 12:00-21:00; Fr-Sa 12:00-22:00; Su 12:00+",
+        "phone": "+32 50 73 74 11",
+        "website": "https://www.bohemianburgers.be/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2224656,
+          51.2085288
+        ]
+      },
+      "id": "node/6452473786"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7745443376",
+        "addr:housenumber": "181A",
+        "addr:street": "Langestraat",
+        "amenity": "fast_food",
+        "cuisine": "friture",
+        "diet:gluten_free": "yes",
+        "diet:halal": "yes",
+        "diet:vegetarian": "yes",
+        "email": "info@frituur-royal.be",
+        "name": "Royal",
+        "opening_hours": "Mo,We,Th 11:30-14:30,17:30-22:00; Fr 11:30-14:30,18:00-23:00; Sa 18:00-23:00; Su 18:00-22:00",
+        "payment:bancomat": "yes",
+        "payment:cards": "yes",
+        "payment:cash": "yes",
+        "phone": "+32 50 68 41 84",
+        "website": "https://www.frituur-royal.be"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2392119,
+          51.2125634
+        ]
+      },
+      "id": "node/7745443376"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11608068444",
+        "addr:housenumber": "159A",
+        "addr:street": "Blankenbergse Steenweg",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "changing_table": "no",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "drive_through": "no",
+        "indoor_seating": "no",
+        "internet_access": "no",
+        "level": "0",
+        "name": "Domino's",
+        "opening_hours": "Mo-Th 16:30-22:00; Fr 11:00-14:00,16:30-22:00; Sa,Su,PH 11:00-22:00",
+        "outdoor_seating": "no",
+        "phone": "+32 50 89 58 98",
+        "takeaway": "only",
+        "toilets": "no",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2061455,
+          51.2252315
+        ]
+      },
+      "id": "node/11608068444"
+    }
+  ]
+}

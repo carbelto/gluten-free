@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🇧🇪 Guía Sin Gluten - Bélgica</title>
     <style>
-        /* CSS Nativo optimizado para un rendimiento ultrarrápido en redes móviles (4G/5G) */
+        /* CSS Nativo optimizado para un rendimiento ultrarrápido en pantallas móviles */
         :root {
             --primary: #059669;
             --primary-dark: #047857;
@@ -36,7 +36,7 @@
 
         main { max-width: 1024px; margin: 0 auto; padding: 1rem; box-sizing: border-box; }
         
-        /* Panel de Control de una sola columna en móvil y flotante en PC */
+        /* Panel de Control ajustable para móvil y escritorio */
         .panel { 
             background: white; 
             border-radius: 1.25rem; 
@@ -61,7 +61,7 @@
             justify-content: space-between; 
             box-sizing: border-box; 
         }
-        .campo label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; tracking: 0.05em; margin-bottom: 0.5rem; }
+        .campo label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; tracking-spacing: 0.05em; margin-bottom: 0.5rem; }
         .campo label.gris { color: #4b5563; }
         
         select, input[type="text"] { 
@@ -72,7 +72,7 @@
             border-radius: 0.625rem; 
             font-size: 1rem; 
             box-sizing: border-box; 
-            -webkit-appearance: none; /* Quita estilos por defecto de iOS */
+            -webkit-appearance: none;
         }
         select:focus, input[type="text"]:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
         
@@ -99,12 +99,10 @@
         
         h2.titulo { font-size: 1.35rem; font-weight: 800; margin: 1.5rem 0 1rem 0; color: #111827; display: none; }
         
-        /* Grid elástica y fluida para tarjetas en móviles y tablets */
         .grid-tarjetas { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
         @media (min-width: 640px) { .grid-tarjetas { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .grid-tarjetas { grid-template-columns: repeat(3, 1fr); } }
         
-        /* Tarjetas estilo App móvil */
         .tarjeta { 
             background: white; 
             padding: 1.25rem; 
@@ -134,12 +132,10 @@
         .direccion { color: #4b5563; font-size: 0.85rem; margin: 0.75rem 0 0.25rem 0; display: flex; align-items: start; gap: 0.35rem; line-height: 1.4; }
         .distancia-txt { color: #6b7280; font-size: 0.8rem; font-weight: 600; margin: 0 0 0.75rem 1.15rem; display: block; }
         
-        /* Cajas de notas optimizadas estéticamente */
         .box-nota { margin-top: 0.75rem; padding: 0.75rem; border-radius: 0.625rem; font-size: 0.8rem; line-height: 1.4; border-left: 4px solid; }
         .nota-local { background-color: #f0fdf4; border-left-color: #10b981; color: #14532d; font-weight: 600; }
         .nota-usuario { background-color: #fffbeb; border-left-color: #f59e0b; color: #78350f; font-style: italic; }
         
-        /* Botón de Google Maps diseñado para pulsaciones cómodas en pantallas táctiles */
         .btn-maps { 
             display: inline-flex; 
             width: 100%; 
@@ -201,13 +197,13 @@
 
                 const datosGeoJson = await respuesta.json();
                 
-                // Mapeo seguro y adaptado para capturar los campos específicos nota_local y nota_usuario
+                // Mapeo adaptado con índices explícitos fijos para evitar errores de compilación
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
                     
                     let latitud = 0;
                     let longitud = 0;
-                    if (feature.geometry && feature.geometry.coordinates) {
+                    if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length >= 2) {
                         longitud = feature.geometry.coordinates[0];
                         latitud = feature.geometry.coordinates[1];
                     }
@@ -223,3 +219,6 @@
                     }
 
                     let categoria = "Restaurante";
+                    if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería";
+                    else if (prop.amenity === "cafe") categoria = "Cafetería";
+                    else if (prop.amenity === "fast_food") categoria = "Comida Rápida";

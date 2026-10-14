@@ -13,7 +13,8 @@
         "addr:city": "Gent",
         "diet:gluten_free": "yes",
         "distancia_centro": "450 m",
-        "note": "Obrador artesanal y cafetería 100% libre de gluten. Comentario usuario: 'Panes, focaccias y tartas espectaculares. Al ser un espacio completamente sin gluten, comes con total tranquilidad de que no hay contaminación.'"
+        "nota_local": "Opciones sin lactosa y veganas disponibles.",
+        "nota_usuario": "Google: ⭐ 4.7. Opinión: 'Obrador artesanal 100% libre de gluten. Comprar pan, dulces de hojaldre o sentarte a tomar un café con tranquilidad absoluta no tiene precio.'"
       },
       "geometry": {
         "type": "Point",
@@ -32,7 +33,8 @@
         "diet:vegan": "only",
         "website": "https://lebotaniste.eu",
         "distancia_centro": "250 m",
-        "note": "Restaurante orgánico y vegano en un local precioso que imita una antigua botica. Comentario usuario: 'Prácticamente toda la carta es sin gluten o adaptable. Los boles templados y las pastas vegetales son deliciosos y muy saludables.'"
+        "nota_local": "Establecimiento 100% vegetariano y vegano.",
+        "nota_usuario": "Google: ⭐ 4.6. Opinión: 'Comida orgánica en un local precioso. Casi toda la carta es apta sin gluten por defecto, los boles calientes de quinoa y las salsas son brutales.'"
       },
       "geometry": {
         "type": "Point",
@@ -50,7 +52,8 @@
         "diet:gluten_free": "yes",
         "website": "https://epiphanyskitchen.com",
         "distancia_centro": "400 m",
-        "note": "Restaurante italiano y de fusión galardonado por su cocina inclusiva. Comentario usuario: 'La masa de pizza sin gluten que hacen de forma artesanal es la mejor que he probado en mi vida. El menú entero está muy cuidado.'"
+        "nota_local": "Cocina con opciones sin lactosa, vegetarianas y veganas.",
+        "nota_usuario": "Google: ⭐ 4.5. Opinión: 'El paraíso de la pizza para celíacos. Su masa casera sin gluten está riquísima e inflada, nada acartonada. El sitio está súper decorado con flores.'"
       },
       "geometry": {
         "type": "Point",
@@ -69,7 +72,8 @@
         "diet:gluten_free": "yes",
         "diet:vegan": "only",
         "distancia_centro": "650 m",
-        "note": "Cafetería y pastelería artesanal acogedora. Comentario usuario: 'Los pasteles y los rollos de canela sin gluten son una auténtica locura de buenos. Hay que ir temprano porque vuelan.'"
+        "nota_local": "Establecimiento 100% vegano y sin gluten. Se recomienda reservar.",
+        "nota_usuario": "Google: ⭐ 4.8. Opinión: 'Una cafetería encantadora de repostería vegana y sin gluten. Los pasteles y bizcochos de vitrina están esponjosos y espectaculares.'"
       },
       "geometry": {
         "type": "Point",
@@ -87,7 +91,8 @@
         "addr:city": "Gent",
         "diet:gluten_free": "yes",
         "distancia_centro": "3.2 km",
-        "note": "Establecimiento de comida rápida saludable. Comentario usuario: 'Boles de ensalada y cremas del día perfectos para comer algo rápido, fresco y sin gluten mientras pateas la ciudad.'"
+        "nota_local": "Bar de comida saludable. Wraps, ensaladas y sopas. Opciones veganas.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Perfecto para comer algo rápido, sano y sin riesgos. Los boles de ensaladas completas y sopas calientes están muy bien detallados para alérgenos.'"
       },
       "geometry": {
         "type": "Point",

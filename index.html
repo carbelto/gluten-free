@@ -11,13 +11,13 @@
 
     <!-- Encabezado Principal -->
     <header class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-10 shadow-lg text-center">
-        <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-xs">🇧🇪 Guía Sin Gluten</h1>
+        <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-sm">🇧🇪 Guía Sin Gluten</h1>
         <p class="text-emerald-100 mt-2 text-lg">Tu comida segura en Bruselas, Gante y Brujas</p>
     </header>
 
     <main class="max-w-5xl mx-auto p-4 sm:p-8">
         
-        <!-- Panel de Filtros -->
+        <!-- Panel de Búsqueda y Selección -->
         <div class="bg-white rounded-2xl shadow-md p-6 mb-8 border border-gray-200">
             <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                 🚀 Panel de Búsqueda
@@ -51,10 +51,10 @@
 
         <!-- BARRA DE ESTADO / MENSAJES INFORMATIVOS -->
         <div id="mensajeEstado" class="text-center py-4 px-6 text-gray-600 bg-amber-50 border border-amber-200 rounded-xl mb-8 font-medium shadow-sm transition-all">
-            👋 ¡Bienvenido! Por favor, selecciona una ciudad para descargar los datos desde GitHub.
+            👋 ¡Bienvenido! Selecciona una ciudad para cargar los lugares automáticamente desde tu GitHub.
         </div>
 
-        <!-- CONTENEDOR DE TARJETAS (Sección Inferior) -->
+        <!-- CONTENEDOR DE TARJETAS (Resultados) -->
         <div class="mb-4">
             <h2 id="tituloResultados" class="text-2xl font-black text-gray-800 hidden mb-6">
                 📍 Sitios sin Gluten Encontrados
@@ -66,17 +66,17 @@
 
     <script>
         // =========================================================================
-        // CONFIGURACIÓN DE TU REPOSITORIO DE GITHUB
-        // Cambia estos dos valores por los tuyos reales en GitHub
+        // ⚙️ CONFIGURACIÓN DE TU REPOSITORIO DE GITHUB
+        // Reemplaza estos valores con tus datos reales de GitHub para conectar los archivos
         // =========================================================================
-        const GITHUB_USER = "TU_USUARIO_DE_GITHUB"; 
-        const GITHUB_REPO = "NOMBRE_DE_TU_REPOSITORIO";
+        const GITHUB_USER = "carbelto"; 
+        const GITHUB_REPO = "gluten-free";
         const GITHUB_BRANCH = "main"; // Cambia a "master" si tu rama principal se llama así
         // =========================================================================
 
         let lugaresActuales = [];
 
-        // Función que descarga el JSON correspondiente desde GitHub en tiempo real
+        // Esta función descarga el JSON desde GitHub de forma automática al cambiar la ciudad
         async function cambiarCiudad() {
             const ciudad = document.getElementById('selectorCiudad').value;
             const panelBusqueda = document.getElementById('panelBusqueda');
@@ -85,55 +85,52 @@
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            // Limpiar estados previos
+            // Limpiar la pantalla de búsquedas anteriores
             buscador.value = '';
             contenedor.innerHTML = '';
             tituloResultados.classList.add('hidden');
             panelBusqueda.classList.add('opacity-40', 'pointer-events-none');
 
-            // Mostrar estado de carga animado
+            // Mensaje de carga animado
             mensajeEstado.className = "text-center py-4 px-6 text-blue-800 bg-blue-50 border border-blue-200 rounded-xl mb-8 font-semibold animate-pulse";
-            mensajeEstado.innerHTML = `⏳ Descargando datos de <b>${ciudad.toUpperCase()}</b> desde GitHub...`;
+            mensajeEstado.innerHTML = `⏳ Cargando datos de <b>${ciudad.toUpperCase()}</b> automáticamente...`;
 
-            // Construir la URL Raw de GitHub para el archivo correspondiente
+            // URL directa al archivo en tu repositorio de GitHub
             const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
 
             try {
                 const respuesta = await fetch(urlJson);
                 
                 if (!respuesta.ok) {
-                    throw new Error(`No se pudo encontrar el archivo lugares_${ciudad}.json`);
+                    throw new Error(`No se pudo acceder al archivo lugares_${ciudad}.json`);
                 }
 
-                // El archivo original de Overpass-Turbo viene en formato GeoJSON (FeatureCollection)
+                // El navegador lee el archivo FeatureCollection de OpenStreetMap
                 const datosGeoJson = await respuesta.json();
                 
-                // Mapear y transformar el GeoJSON en tiempo real al formato limpio de tarjetas
+                // Transforma el mapa original en un formato limpio para las tarjetas en tiempo real
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
-                    const coords = feature.geometry.coordinates;
+                    const coords = feature.geometry.coordinates; // [longitud, latitud]
 
-                    // Unificar dirección (Calle + Número)
+                    // Unificar los textos de la dirección
                     let direccionFinal = prop["addr:street"] || "";
-                    if (prop["addr:housenumber"]) {
-                        direccionFinal += ` ${prop["addr:housenumber"]}`;
-                    }
+                    if (prop["addr:housenumber"]) direccionFinal += ` ${prop["addr:housenumber"]}`;
                     if (prop["addr:city"]) {
                         direccionFinal += `, ${prop["addr:city"]}`;
                     } else {
-                        // Respaldo de ciudad si no viene explícita en las etiquetas
                         direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
                     }
 
-                    // Determinar una categoría amigable
+                    // Traducir las categorías del mapa original
                     let categoria = "Restaurante";
-                    if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería / Pastelería";
+                    if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería";
                     else if (prop.amenity === "cafe") categoria = "Cafetería";
                     else if (prop.amenity === "fast_food") categoria = "Comida Rápida";
                     else if (prop.cuisine === "pizza") categoria = "Pizzería";
                     else if (prop.cuisine === "burger") categoria = "Hamburguesería";
 
-                    // Construir notas basadas en las etiquetas dietéticas
+                    // Generar notas dinámicas leyendo si tiene opciones veganas o sin lactosa
                     let notasArray = [];
                     if (prop["diet:lactose_free"] === "yes") notasArray.push("Sin lactosa");
                     if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") notasArray.push("Vegano");
@@ -141,39 +138,32 @@
                     if (prop.takeaway === "only") notasArray.push("Solo para llevar");
                     
                     let notaFinal = notasArray.length > 0 
-                        ? `Opciones disponibles: ${notasArray.join(", ")}.` 
+                        ? `Opciones: ${notasArray.join(", ")}.` 
                         : "Opciones sin gluten verificadas.";
 
-                    // Retornar el objeto estructurado listo para la interfaz, guardando también coordenadas exactas
                     return {
-                        nombre: prop.name || "Establecimiento sin nombre",
+                        nombre: prop.name || "Establecimiento",
                         categoria: categoria,
                         direccion: direccionFinal,
                         nota: notaFinal,
-                        lat: coords[1],
-                        lon: coords[0]
+                        lat: coords[1], // Latitud
+                        lon: coords[0]  // Longitud
                     };
                 });
 
-                // Activar componentes visuales tras la carga exitosa
+                // Activar el buscador y mostrar resultados
                 panelBusqueda.classList.remove('opacity-40', 'pointer-events-none');
                 tituloResultados.classList.remove('hidden');
 
                 mensajeEstado.className = "text-center py-4 px-6 text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl mb-8 font-semibold shadow-sm";
-                mensajeEstado.innerHTML = `🎉 ¡Conectado! Se han cargado <b>${lugaresActuales.length} locales</b> en tiempo real desde tu GitHub.`;
+                mensajeEstado.innerHTML = `🎉 Se han cargado <b>${lugaresActuales.length} locales</b> en <b>${ciudad.toUpperCase()}</b> de forma automática.`;
 
                 mostrarLugares(lugaresActuales);
 
             } catch (error) {
                 mensajeEstado.className = "text-center py-4 px-6 text-red-800 bg-red-50 border border-red-200 rounded-xl mb-8 font-semibold";
-                mensajeEstado.innerHTML = `❌ <b>Error de conexión:</b> No se pudo leer el archivo. Revisa que las variables <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_USER</code> y <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_REPO</code> estén bien escritas y el repositorio sea público.`;
+                mensajeEstado.innerHTML = `❌ <b>Error automático:</b> No se pudo leer el archivo de GitHub. Comprueba que las variables <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_USER</code> y <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_REPO</code> coincidan exactamente con tu repositorio público.`;
                 console.error(error);
             }
         }
 
-        // Dibuja las tarjetas de los locales en pantalla
-        function mostrarLugares(lugares) {
-            const contenedor = document.getElementById('listaLugares');
-            contenedor.innerHTML = '';
-
-            if (lugares.length === 0) {

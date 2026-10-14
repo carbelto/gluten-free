@@ -56,6 +56,11 @@
   .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
   .card h2 { font-size: 1.05rem; margin: 0; }
   .meta { color: var(--muted); font-size: .85rem; margin-top: 4px; line-height: 1.4; }
+  .campos { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 12px 0 0; font-size: .85rem; }
+  .campos dt { color: var(--muted); font-weight: 600; }
+  .campos dd { margin: 0; overflow-wrap: anywhere; }
+  .campos .vacio { color: var(--muted); font-style: italic; opacity: .7; }
+  .campos a { color: var(--accent-dark); }
   .badge { background: var(--accent-soft); color: var(--accent-dark); font-size: .7rem; font-weight: 700;
     padding: 3px 9px; border-radius: 6px; text-transform: uppercase; white-space: nowrap; border: 1px solid transparent; }
   .badge.only { background: var(--accent); color: #fff; }
@@ -217,54 +222,118 @@ function categoria(t) {
   return "Restaurante";
 }
 
+/* ---------- Traducción al castellano ---------- */
+const ETIQUETAS = {
+  amenity: "Tipo de local", cuisine: "Tipo de cocina", street: "Calle", housenumber: "Número",
+  city: "Ciudad", gluten: "Opciones sin gluten", website: "Sitio web", note: "Nota"
+};
+
+const T_AMENITY = {
+  restaurant: "Restaurante", cafe: "Cafetería", bar: "Bar", pub: "Pub", fast_food: "Comida rápida",
+  ice_cream: "Heladería", biergarten: "Cervecería al aire libre", food_court: "Zona de restauración",
+  bakery: "Panadería", pastry: "Pastelería", confectionery: "Confitería", deli: "Delicatessen"
+};
+
+const T_COCINA = {
+  regional: "Regional", local: "Local", international: "Internacional", belgian: "Belga", flemish: "Flamenca",
+  dutch: "Neerlandesa", italian: "Italiana", french: "Francesa", german: "Alemana", spanish: "Española",
+  greek: "Griega", turkish: "Turca", lebanese: "Libanesa", middle_eastern: "De Oriente Medio",
+  mediterranean: "Mediterránea", american: "Americana", mexican: "Mexicana", asian: "Asiática",
+  chinese: "China", japanese: "Japonesa", korean: "Coreana", thai: "Tailandesa", vietnamese: "Vietnamita",
+  indian: "India", pizza: "Pizza", burger: "Hamburguesas", pasta: "Pasta", sushi: "Sushi", ramen: "Ramen",
+  noodle: "Fideos", wok: "Wok", kebab: "Kebab", sandwich: "Bocadillos", tapas: "Tapas", salad: "Ensaladas",
+  soup: "Sopas", seafood: "Marisco", fish: "Pescado", fish_and_chips: "Fish and chips",
+  steak_house: "Asador / parrilla", vegetarian: "Vegetariana", vegan: "Vegana", bistro: "Bistró",
+  brasserie: "Brasserie", breakfast: "Desayunos", brunch: "Brunch", coffee_shop: "Cafetería", coffee: "Café",
+  tea: "Té", bubble_tea: "Té de burbujas", cake: "Tartas", waffle: "Gofres", crepe: "Crepes",
+  chocolate: "Chocolate", ice_cream: "Helados", bakery: "Panadería"
+};
+
+const T_GLUTEN = {
+  yes: "Sí, ofrece opciones sin gluten", only: "Sí, 100 % sin gluten",
+  limited: "Opciones limitadas", no: "No"
+};
+
+/* Si no hay traducción, se muestra el valor original con formato legible. */
+function humanizar(v) {
+  const s = String(v).replace(/_/g, " ").trim();
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+const traducir = (tabla, v) => tabla[String(v).trim().toLowerCase()] || humanizar(v);
+const traducirLista = (tabla, v) =>
+  String(v).split(";").map((x) => x.trim()).filter(Boolean).map((x) => traducir(tabla, x)).join(", ");
+
+/* Solo se enlazan webs http(s); se descartan javascript:, data:, etc. */
+function urlSegura(w) {
+  const s = String(w || "").trim();
+  if (!s || /^(javascript|data|vbscript|file):/i.test(s)) return "";
+  return /^https?:\/\//i.test(s) ? s : "https://" + s;
+}
+
+const VACIO = '<span class="vacio">No indicado</span>';
+const fila = (etiqueta, html) => `<dt>${etiqueta}</dt><dd>${html || VACIO}</dd>`;
+
 /* Construye un lugar a partir de las etiquetas de OSM. */
 function buildPlace(t, lat, lon, osmId) {
   if (!t || !t.name) return null;
   const hasCoords = lat != null && lon != null && isFinite(lat) && isFinite(lon);
-  const street = [t["addr:street"], t["addr:housenumber"]].filter(Boolean).join(" ");
+  const street = String(t["addr:street"] || ""), housenumber = String(t["addr:housenumber"] || ""),
+        city = String(t["addr:city"] || "");
   const extras = [];
   if (t["diet:lactose_free"] === "yes") extras.push("Sin lactosa");
   if (t["diet:vegan"] === "yes" || t["diet:vegan"] === "only") extras.push("Vegano");
   if (t["diet:vegetarian"] === "yes" || t["diet:vegetarian"] === "only") extras.push("Vegetariano");
   if (t.takeaway === "only") extras.push("Solo para llevar");
   const isOsmId = /^(node|way|relation)\/\d+$/.test(osmId || "");
+  /* Sin id de OSM ni coordenadas, el id se forma con nombre + dirección para que
+     dos locales de la misma cadena (p. ej. dos Domino's) no compartan valoraciones. */
+  const claveDir = slugify(`${street} ${housenumber}`);
   return {
-    id: isOsmId ? osmId : (hasCoords ? `geo/${lat.toFixed(5)}_${lon.toFixed(5)}` : `nombre/${slugify(t.name)}`),
+    id: isOsmId ? osmId
+      : hasCoords ? `geo/${Number(lat).toFixed(5)}_${Number(lon).toFixed(5)}`
+      : `nombre/${slugify(t.name)}${claveDir ? "_" + claveDir : ""}`,
     osm: isOsmId ? osmId : "",
-    name: t.name,
+    name: String(t.name),
     kind: categoria(t),
-    cuisine: t.cuisine ? t.cuisine.split(";").map((c) => c.replace(/_/g, " ")).join(", ") : "",
+    cuisine: t.cuisine ? traducirLista(T_COCINA, t.cuisine) : "",
     only: t["diet:gluten_free"] === "only",
     extras,
-    address: [street, t["addr:city"]].filter(Boolean).join(", "),
-    website: t.website || t["contact:website"] || "",
-    phone: t.phone || t["contact:phone"] || "",
+    address: [[street, housenumber].filter(Boolean).join(" "), city].filter(Boolean).join(", "),
     hours: t.opening_hours || "",
+    phone: t.phone || t["contact:phone"] || "",
+    /* Valores originales de los 9 campos que se muestran en la tarjeta */
+    f: {
+      amenity: t.amenity || t.shop || "",
+      cuisine: t.cuisine || "",
+      street, housenumber, city,
+      gluten: t["diet:gluten_free"] || "",
+      website: t.website || t["contact:website"] || "",
+      note: t.note || ""
+    },
     lat: hasCoords ? Number(lat) : null,
     lon: hasCoords ? Number(lon) : null
   };
 }
 
-/* Archivo precargado: GeoJSON de OSM (con .features) o lista simple
-   [{nombre, categoria, direccion, lat, lon}]. */
+/* Archivo precargado. Acepta: GeoJSON de OSM ({features:[…]}), JSON de Overpass
+   ({elements:[…]}) o una lista de objetos con las claves de OSM
+   ([{name, amenity, cuisine, "addr:street", …, lat, lon}]). */
 function normalizarPrecargado(datos) {
-  let out = [];
-  if (datos && Array.isArray(datos.features)) {
-    out = datos.features.map((f) => {
-      const [lon, lat] = centro(f.geometry);
-      return buildPlace(f.properties || {}, lat, lon, f.id || (f.properties && f.properties["@id"]));
-    });
-  } else if (Array.isArray(datos)) {
-    out = datos.map((it) => {
-      const p = buildPlace({ name: it.nombre || it.name, cuisine: it.cuisine }, it.lat, it.lon, null);
-      if (p) {
-        p.kind = it.categoria || p.kind;
-        p.address = it.direccion || "";
-      }
-      return p;
-    });
-  }
-  return out.filter(Boolean);
+  const lista = Array.isArray(datos) ? datos
+    : datos && (datos.features || datos.elements || datos.lugares || datos.places || datos.data);
+  if (!Array.isArray(lista)) return [];
+  return lista.map((it) => {
+    if (!it || typeof it !== "object") return null;
+    if (it.geometry) {                                   // GeoJSON
+      const [lon, lat] = centro(it.geometry);
+      return buildPlace(it.properties || {}, lat, lon, it.id || (it.properties && it.properties["@id"]));
+    }
+    const tags = it.tags || it.properties || it;         // Overpass o lista plana
+    const lat = it.lat ?? it.center?.lat ?? it.latitude ?? tags.lat ?? tags.latitude;
+    const lon = it.lon ?? it.center?.lon ?? it.lng ?? it.longitude ?? tags.lon ?? tags.lng ?? tags.longitude;
+    const id = it.type && it.id != null ? `${it.type}/${it.id}` : (it.osm_id || null);
+    return buildPlace(tags, lat, lon, id);
+  }).filter(Boolean);
 }
 
 /* ============================ VALORACIONES ============================ */
@@ -456,7 +525,7 @@ function visiblePlaces() {
   if ($("onlyFilter").checked) list = list.filter((p) => p.only);
   const q = $("textFilter").value.toLowerCase().trim();
   if (q) {
-    list = list.filter((p) => [p.name, p.kind, p.cuisine, p.address].some((v) => (v || "").toLowerCase().includes(q)));
+    list = list.filter((p) => [p.name, p.kind, p.cuisine, p.address, p.f.note].some((v) => (v || "").toLowerCase().includes(q)));
   }
   const score = (p) => {
     const s = summaries[p.id];
@@ -481,22 +550,31 @@ function render() {
     const s = summaries[p.id];
     const card = document.createElement("div");
     card.className = "card";
+    const f = p.f, web = urlSegura(f.website);
     card.innerHTML = `
       <div class="card-head">
         <h2>${esc(p.name)}</h2>
         <span class="badge ${p.only ? "only" : ""}">${p.only ? "100 % sin gluten" : "Con opciones"}</span>
       </div>
-      <div class="meta">${esc(p.kind)}${p.cuisine ? " · " + esc(p.cuisine) : ""}${p.extras.length ? " · " + esc(p.extras.join(", ")) : ""}</div>
-      ${p.address ? `<div class="meta">📍 ${esc(p.address)}</div>` : ""}
-      ${p.hours ? `<div class="meta">🕒 ${esc(p.hours)}</div>` : ""}
-      ${p.phone ? `<div class="meta">📞 ${esc(p.phone)}</div>` : ""}
+      <dl class="campos">
+        ${fila(ETIQUETAS.amenity, f.amenity && esc(traducir(T_AMENITY, f.amenity)))}
+        ${fila(ETIQUETAS.cuisine, f.cuisine && esc(traducirLista(T_COCINA, f.cuisine)))}
+        ${fila(ETIQUETAS.street, f.street && esc(f.street))}
+        ${fila(ETIQUETAS.housenumber, f.housenumber && esc(f.housenumber))}
+        ${fila(ETIQUETAS.city, f.city && esc(f.city))}
+        ${fila(ETIQUETAS.gluten, f.gluten && esc(traducir(T_GLUTEN, f.gluten)))}
+        ${fila(ETIQUETAS.website, web && `<a href="${esc(web)}" target="_blank" rel="noopener noreferrer">${esc(web.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, ""))}</a>`)}
+        ${fila(ETIQUETAS.note, f.note && esc(f.note))}
+        ${p.hours ? fila("Horario", esc(p.hours)) : ""}
+        ${p.phone ? fila("Teléfono", esc(p.phone)) : ""}
+        ${p.extras.length ? fila("Otras opciones", esc(p.extras.join(", "))) : ""}
+      </dl>
       <div class="rating">
         ${s ? `<span class="stars">${starsText(s.avg)}</span><strong>${s.avg.toFixed(1)}</strong><span class="meta">(${s.count})</span>`
             : `<span class="meta">Aún sin valoraciones</span>`}
       </div>
       <div class="actions">
         <button class="secondary" data-rate="${esc(p.id)}">Valorar</button>
-        ${/^https?:\/\//i.test(p.website) ? `<a href="${esc(p.website)}" target="_blank" rel="noopener noreferrer">Web</a>` : ""}
         <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener noreferrer">Google Maps</a>
         ${p.osm ? `<a href="https://www.openstreetmap.org/${esc(p.osm)}" target="_blank" rel="noopener noreferrer">Ver en OSM</a>` : ""}
       </div>`;

@@ -1,0 +1,528 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-10-14T08:01:19Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/186749524",
+        "addr:housenumber": "69",
+        "addr:street": "Edmond Van Hoorebekestraat",
+        "branch": "Ledeberg",
+        "brand": "Colruyt",
+        "brand:wikidata": "Q2363991",
+        "building": "retail",
+        "diet:gluten_free": "yes",
+        "diet:halal": "yes",
+        "diet:kosher": "yes",
+        "name": "Colruyt",
+        "opening_hours": "Mo-Th,Sa 08:00-20:00; Fr 08:00-21:00; PH off",
+        "phone": "+32 9 230 10 55",
+        "shop": "supermarket",
+        "source:geometry:date": "2015-10-01",
+        "source:geometry:ref": "Gbg/5386149",
+        "website": "https://www.colruyt.be/nl/winkelzoeker/colruyt-ledeberg",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              3.7480392,
+              51.0362244
+            ],
+            [
+              3.7482217,
+              51.035976
+            ],
+            [
+              3.7483079,
+              51.0360013
+            ],
+            [
+              3.7483649,
+              51.0360183
+            ],
+            [
+              3.7485403,
+              51.0360694
+            ],
+            [
+              3.7485974,
+              51.0360859
+            ],
+            [
+              3.7486192,
+              51.0360546
+            ],
+            [
+              3.7486322,
+              51.0360359
+            ],
+            [
+              3.7486558,
+              51.0360428
+            ],
+            [
+              3.7487166,
+              51.0360605
+            ],
+            [
+              3.7487109,
+              51.0360693
+            ],
+            [
+              3.7488769,
+              51.0361178
+            ],
+            [
+              3.7487485,
+              51.0362928
+            ],
+            [
+              3.7492224,
+              51.0364311
+            ],
+            [
+              3.7491398,
+              51.0365454
+            ],
+            [
+              3.7491363,
+              51.0365513
+            ],
+            [
+              3.7490784,
+              51.0366479
+            ],
+            [
+              3.7490324,
+              51.0366346
+            ],
+            [
+              3.748976,
+              51.0366183
+            ],
+            [
+              3.7488755,
+              51.0365893
+            ],
+            [
+              3.7488184,
+              51.0365728
+            ],
+            [
+              3.7488692,
+              51.036468
+            ],
+            [
+              3.7482045,
+              51.036275
+            ],
+            [
+              3.7480859,
+              51.0362387
+            ],
+            [
+              3.7480392,
+              51.0362244
+            ]
+          ]
+        ]
+      },
+      "id": "way/186749524"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2275104999",
+        "addr:housenumber": "278",
+        "addr:street": "Zwijnaardsesteenweg",
+        "check_date": "2026-08-12",
+        "contact:facebook": "bakkerij.frimout",
+        "contact:instagram": "bakkerfrimout",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "email": "dieter@bakkerfrimout.be",
+        "entrance:kerb:height": "0",
+        "entrance:step_count": "0",
+        "entrance:width": "0.85",
+        "name": "Bakkerij Frimout",
+        "opening_hours": "Mo-Th 06:00-18:30; Fr 06:00-18:00",
+        "phone": "+32 9 222 53 67",
+        "shop": "bakery",
+        "toilets:wheelchair": "no",
+        "website": "http://bakkerfrimout.be",
+        "wheelchair:turning_circle": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7223729,
+          51.0296363
+        ]
+      },
+      "id": "node/2275104999"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3092329586",
+        "check_date": "2026-02-02",
+        "diet:gluten_free": "yes",
+        "disused:shop": "bakery",
+        "name": "Van Hecke",
+        "opening_hours": "Tu-Sa 06:00-18:30"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7305555,
+          51.0386687
+        ]
+      },
+      "id": "node/3092329586"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3392860009",
+        "addr:city": "Gent",
+        "addr:housenumber": "57",
+        "addr:postcode": "9000",
+        "addr:street": "Overpoortstraat",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "check_date": "2023-11-15",
+        "contact:phone": "+32 9 220 37 37",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "entrance:kerb:height": "0.16",
+        "entrance:step_count": "1",
+        "entrance:width": "0.87",
+        "name": "Domino's",
+        "opening_hours": "17:00-23:30",
+        "outdoor_seating": "yes",
+        "reservation": "no",
+        "short_name": "Domino's",
+        "takeaway": "yes",
+        "toilets:wheelchair": "no",
+        "website": "https://www.dominos.be/nl/winkel/be-gent-31176",
+        "website:menu": "https://www.dominos.be/nl/menu",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7262419,
+          51.0389169
+        ]
+      },
+      "id": "node/3392860009"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4052744492",
+        "addr:city": "Gent",
+        "addr:housenumber": "13",
+        "addr:postcode": "9000",
+        "addr:street": "Hoornstraat",
+        "amenity": "restaurant",
+        "changing_table": "no",
+        "check_date": "2023-01-02",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "diet:vegetarian": "only",
+        "entrance:kerb:height": "0.54",
+        "entrance:ramp": "no",
+        "entrance:step_count": "4",
+        "entrance:width": "0.82",
+        "name": "Le Botaniste",
+        "opening_hours": "Mo-Su 11:30-21:30",
+        "toilets:wheelchair": "no",
+        "website": "https://lebotaniste.eu",
+        "wheelchair": "no",
+        "wheelchair:turning_circle": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7211327,
+          51.0521451
+        ]
+      },
+      "id": "node/4052744492"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4606858515",
+        "addr:city": "Gent",
+        "addr:housenumber": "226",
+        "addr:postcode": "9000",
+        "addr:street": "Koningin Astridlaan",
+        "alt_name": "Domino's Pizza Gent St. Pieters",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "changing_table": "no",
+        "changing_table:adult": "no",
+        "check_date": "2026-07-06",
+        "cuisine": "pizza",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "drive_through": "no",
+        "entrance:kerb:height": "0.16",
+        "entrance:ramp": "no",
+        "entrance:step_count": "1",
+        "entrance:width": "0.86",
+        "name": "Domino's",
+        "opening_hours": "Mo-Su 11:00-23:00",
+        "operator": "Domino's",
+        "outdoor_seating": "sidewalk",
+        "takeaway": "yes",
+        "toilets:wheelchair": "no",
+        "website": "https://www.dominos.be/nl/winkel/be-gentstpieters-31205",
+        "wheelchair": "no",
+        "wheelchair:turning_circle": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7127722,
+          51.0367231
+        ]
+      },
+      "id": "node/4606858515"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4857533585",
+        "addr:housenumber": "34",
+        "addr:street": "Oudenaardsesteenweg",
+        "amenity": "fast_food",
+        "check_date:opening_hours": "2022-05-18",
+        "cuisine": "wrap;salad;soup",
+        "delivery": "yes",
+        "description": "healthy food bar",
+        "description:en": "healthy food bar",
+        "description:nl": "gezonde eetbar",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "email": "info@eetoile.be",
+        "entrance:kerb:height": "0.05",
+        "entrance:step_count": "1",
+        "entrance:width": "1.2",
+        "name": "Eetoile",
+        "opening_hours": "Mo-Fr 10:00-15:00; PH off",
+        "outdoor_seating": "yes",
+        "phone": "+32 9 279 88 97",
+        "start_date": "2017",
+        "takeaway": "yes",
+        "toilets:wheelchair": "no",
+        "toilets:wheelchair:space_side": "0.3",
+        "website": "https://eetoile.be/",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7093609,
+          51.0247923
+        ]
+      },
+      "id": "node/4857533585"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5428846934",
+        "addr:city": "Gent",
+        "addr:housenumber": "18",
+        "addr:postcode": "9000",
+        "addr:street": "Sint-Salvatorstraat",
+        "addr:unit": "a",
+        "amenity": "restaurant",
+        "cuisine": "buffet;fresh",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "email": "amour.restaurant9000@gmail.com",
+        "name": "Amour",
+        "opening_hours": "Mo-Fr 12:00-14:00, Fr 18:00-21:00; PH off",
+        "payment:debit_cards": "yes",
+        "phone": "+32 9 352 05 70",
+        "website": "https://www.amourgent.be/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7294001,
+          51.0657845
+        ]
+      },
+      "id": "node/5428846934"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6779344616",
+        "addr:housenumber": "62",
+        "addr:street": "Willem Wenemaerstraat",
+        "amenity": "restaurant",
+        "created_by": "On Wheels: 3.0.3",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "entrance:kerb:height": "0.19",
+        "entrance:step_count": "1",
+        "entrance:width": "0.91",
+        "level": "0",
+        "name": "Kingslize",
+        "phone": "+32 9 229 29 10",
+        "takeaway": "only",
+        "website": "https://kingslizepizza.be/",
+        "wheelchair:description": "Enkel afhaal, bediening kan ook buiten gebeuren"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.730756,
+          51.0387755
+        ]
+      },
+      "id": "node/6779344616"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10295133531",
+        "amenity": "cafe",
+        "contact:facebook": "catberrypastries",
+        "contact:instagram": "catberry.pastries",
+        "contact:pinterest": "Catberrypastries",
+        "contact:website": "https://catberry.be/",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "name": "Catberry",
+        "opening_hours": "We-Su 10:00-18:00",
+        "opening_hours:url": "https://catberry.be/",
+        "ref:vatin": "BE0768952157",
+        "reservation": "yes",
+        "shop": "pastry",
+        "source:opening_hours": "website",
+        "survey:date": "2024-08-30",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:fee": "no",
+        "toilets:gender_segregated": "no",
+        "toilets:wheelchair": "no",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7338242,
+          51.0486434
+        ]
+      },
+      "id": "node/10295133531"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12108332057",
+        "amenity": "restaurant",
+        "check_date": "2024-08-13",
+        "diet:gluten_free": "yes",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "email": "hello@epiphanyskitchen.com",
+        "name": "Epiphany's",
+        "phone": "+32 9 329 48 42",
+        "website": "https://epiphanyskitchen.com/",
+        "website:menu": "http://epiphanyskitchen.com/en/menu-online-eng/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7194008,
+          51.0567099
+        ]
+      },
+      "id": "node/12108332057"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12798223055",
+        "addr:housenumber": "34",
+        "addr:street": "Kogelstraat",
+        "amenity": "restaurant",
+        "cuisine": "local",
+        "delivery": "no",
+        "diet:gluten_free": "yes",
+        "diet:halal": "limited",
+        "diet:lactose_free": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "dog": "leashed",
+        "email": "team@timelab.org",
+        "indoor_seating": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "customers",
+        "name": "Timelab Eatery",
+        "opening_hours": "Mo-Fr 12:00-17:00",
+        "organic": "yes",
+        "outdoor_seating": "yes",
+        "panoramax": "3b60eb55-6c65-49f4-8af6-291928af860a",
+        "payment:cards": "yes",
+        "payment:cash": "yes",
+        "payment:qr_code": "yes",
+        "phone": "+32 9 391 96 10",
+        "reservation": "yes",
+        "service:electricity": "limited",
+        "start_date": "2025-05-09",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "toilets:gender_segregated": "no",
+        "toilets:handwashing": "yes",
+        "toilets:paper_supplied": "yes",
+        "toilets:position": "seated",
+        "toilets:supervised": "no",
+        "toilets:wheelchair": "yes",
+        "website": "https://eatery.timelab.org/",
+        "website:menu": "https://eatery.timelab.org/wp-content/uploads/2025/04/menu.pdf",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.7415094,
+          51.05882
+        ]
+      },
+      "id": "node/12798223055"
+    }
+  ]
+}

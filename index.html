@@ -37,22 +37,23 @@
     border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
   .filters label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-  /* Adaptabilidad universal: Grid por defecto para pantallas medianas/grandes, Flex vertical para móviles */
-  main { display: grid; grid-template-columns: minmax(320px, 420px) 1fr; height: calc(100vh - 165px); min-height: 450px; }
-  #list { overflow-y: auto; padding: 12px; background: var(--bg); }
-  #map { width: 100%; height: 100%; min-height: 300px; background: #e5e7eb; }
+  /* Prioridad a la información: la lista ocupa el espacio principal y el mapa pasa a ser secundario / colapsable */
+  main { display: grid; grid-template-columns: 1fr 320px; height: calc(100vh - 165px); min-height: 450px; }
+  #list { overflow-y: auto; padding: 16px; background: var(--bg); }
+  #map-container { display: flex; flex-direction: column; background: var(--card); border-left: 1px solid var(--border); }
+  #map { width: 100%; height: 100%; min-height: 250px; background: #e5e7eb; }
 
-  #status { padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; font-size: .9rem;
+  #status { padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; font-size: .9rem;
     background: var(--warn-bg); color: var(--warn-text); }
   #status.ok { background: var(--accent-soft); color: var(--accent-dark); }
   #status.error { background: var(--error-bg); color: var(--error-text); }
   #status.loading { background: #eff6ff; color: #1e40af; }
 
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px; margin-bottom: 10px; cursor: pointer; transition: box-shadow .15s, transform .15s; }
-  .card:hover { border-color: var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.08); transform: translateY(-1px); }
+    padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: border-color .15s; }
+  .card:hover { border-color: var(--accent); }
   .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-  .card h2 { font-size: 1.05rem; margin: 0; }
+  .card h2 { font-size: 1.1rem; margin: 0; }
   
   .campos { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 10px 0 0; font-size: .85rem; }
   .campos dt { color: var(--muted); font-weight: 600; }
@@ -64,21 +65,22 @@
     padding: 3px 8px; border-radius: 6px; text-transform: uppercase; white-space: nowrap; }
   .badge.only { background: var(--accent); color: #fff; }
 
-  .nota-local-box { background: var(--accent-soft); color: var(--accent-dark); border-left: 3px solid var(--accent); padding: 8px 10px; margin-top: 10px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
-  .nota-usuario-box { background: var(--warn-bg); color: var(--warn-text); border-left: 3px solid var(--star); padding: 8px 10px; margin-top: 8px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
+  .nota-local-box { background: var(--accent-soft); color: var(--accent-dark); border-left: 3px solid var(--accent); padding: 8px 12px; margin-top: 10px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
+  .nota-usuario-box { background: var(--warn-bg); color: var(--warn-text); border-left: 3px solid var(--star); padding: 8px 12px; margin-top: 8px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
 
-  .actions { margin-top: 10px; display: flex; gap: 8px; align-items: center; }
-  .actions a { color: var(--accent-dark); font-size: .85rem; font-weight: 600; text-decoration: none; padding: 4px 0; }
-  .actions a:hover { text-decoration: underline; }
+  .actions { margin-top: 12px; display: flex; gap: 12px; align-items: center; }
+  .actions a { display: inline-flex; align-items: center; gap: 6px; background: #ea580c; color: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 8px; transition: background .15s; }
+  .actions a:hover { background: #c2410c; }
+  .actions a.web-link { background: var(--accent-soft); color: var(--accent-dark); }
+  .actions a.web-link:hover { filter: brightness(.95); }
   
   footer { font-size: .75rem; color: var(--muted); padding: 10px 16px; text-align: center; background: var(--card); border-top: 1px solid var(--border); }
   footer a { color: var(--accent-dark); }
 
-  /* Media Query específica para móviles y pantallas estrechas */
-  @media (max-width: 768px) {
+  @media (max-width: 850px) {
     main { grid-template-columns: 1fr; height: auto; display: flex; flex-direction: column; }
-    #map { height: 280px; order: 1; flex-shrink: 0; }
-    #list { order: 2; max-height: 55vh; }
+    #map-container { height: 260px; order: 2; border-left: none; border-top: 1px solid var(--border); }
+    #list { order: 1; max-height: none; }
     .filters { flex-direction: column; align-items: stretch; gap: 8px; }
     .filters input[type=text], .filters select { width: 100%; }
   }
@@ -87,7 +89,7 @@
 <body>
 <header>
   <h1>🌾 Buscador Sin Gluten</h1>
-  <p>Locales seguros en Bélgica valorados por la comunidad</p>
+  <p>Locales seguros en Bélgica con información detallada y opiniones</p>
   <div class="chips" role="group" aria-label="Elige una ciudad">
     <button type="button" data-city="brujas">Brujas</button>
     <button type="button" data-city="bruselas" class="active">Bruselas</button>
@@ -108,7 +110,9 @@
     <div id="status">Cargando datos...</div>
     <div id="cards"></div>
   </section>
-  <div id="map"></div>
+  <div id="map-container">
+    <div id="map"></div>
+  </div>
 </main>
 
 <footer>
@@ -245,13 +249,13 @@ function render() {
       </div>
       <dl class="campos">
         ${fila("Dirección", esc(p.address))}
-        ${fila("Distancia", esc(p.f.distancia))}
-        ${fila("Sitio web", web ? `<a href="${esc(web)}" target="_blank" rel="noopener">${esc(web.replace(/^https?:\/\//, ''))}</a>` : "")}
+        ${fila("Distancia centro", esc(p.f.distancia))}
       </dl>
-      ${p.f.nota_local ? `<div class="nota-local-box">💡 <strong>Nota:</strong> ${esc(p.f.nota_local)}</div>` : ""}
-      ${p.f.nota_usuario ? `<div class="nota-usuario-box">💬 <strong>Opinión:</strong> ${esc(p.f.nota_usuario)}</div>` : ""}
+      ${p.f.nota_local ? `<div class="nota-local-box">💡 <strong>Nota del local:</strong> ${esc(p.f.nota_local)}</div>` : ""}
+      ${p.f.nota_usuario ? `<div class="nota-usuario-box">💬 <strong>Opinión de usuario:</strong> ${esc(p.f.nota_usuario)}</div>` : ""}
       <div class="actions">
-        <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">📍 Abrir en Google Maps</a>
+        <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">📍 Google Maps</a>
+        ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener" class="web-link">🌐 Sitio Web</a>` : ""}
       </div>`;
     
     card.addEventListener("click", (e) => {
@@ -259,9 +263,6 @@ function render() {
       if (map && p.lat != null) {
         map.flyTo([p.lat, p.lon], 16);
         markers[p.id]?.openPopup();
-        if (window.innerWidth <= 768) {
-          $("map").scrollIntoView({ behavior: 'smooth' });
-        }
       }
     });
     cards.appendChild(card);

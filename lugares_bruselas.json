@@ -1,0 +1,74 @@
+[
+  {
+    "nombre": "Café De Markten",
+    "categoria": "Cafetería / Bar",
+    "direccion": "Bruxelles",
+    "nota": "Dispone de terraza exterior e Internet wifi gratuito. Opciones vegetarianas."
+  },
+  {
+    "nombre": "Ellis Burger",
+    "categoria": "Hamburguesería / Restaurante",
+    "direccion": "Bruxelles",
+    "nota": "Hamburguesas gourmet con opciones vegetarianas y veganas excelentes."
+  },
+  {
+    "nombre": "Nom Pow",
+    "categoria": "Restaurante Asiático",
+    "direccion": "Bruxelles",
+    "nota": "Comida asiática con opciones veganas y vegetarianas. Solo pago en efectivo."
+  },
+  {
+    "nombre": "Horia",
+    "categoria": "Restaurante Oriental",
+    "direccion": "Bruxelles",
+    "nota": "Cocina orgánica libanesa y marroquí. Opciones Halal, veganas y saludables."
+  },
+  {
+    "nombre": "Joe & The Juice",
+    "categoria": "Cafetería / Zumos",
+    "direccion": "Bruxelles",
+    "nota": "Especializados en zumos naturales, café y opciones rápidas."
+  },
+  {
+    "nombre": "Foodmaker",
+    "categoria": "Comida Rápida / Ensaladas",
+    "direccion": "Bruxelles",
+    "nota": "Barra de ensaladas saludables y platos preparados listos para llevar."
+  },
+  {
+    "nombre": "Tapatat",
+    "categoria": "Comida Rápida",
+    "direccion": "Bruxelles",
+    "nota": "Opciones veganas y vegetarianas verificadas."
+  },
+  {
+    "nombre": "Domino's",
+    "categoria": "Pizza / Comida Rápida",
+    "direccion": "Bruxelles Laeken",
+    "nota": "Opciones sin lactosa, vegetarianas y veganas disponibles."
+  },
+  {
+    "nombre": "Domino's",
+    "categoria": "Pizza / Comida Rápida",
+    "direccion": "Bruxelles",
+    "nota": "Opciones sin lactosa, vegetarianas y veganas disponibles."
+  },
+  {
+    "nombre": "Exki",
+    "categoria": "Comida Rápida / Saludable",
+    "direccion": "Bruxelles Bourse",
+    "nota": "Ensaladas, sándwiches y tartas saludables con opciones veganas."
+  },
+  {
+    "nombre": "Picadeli Carrefour Express",
+    "categoria": "Bar de Ensaladas / Para llevar",
+    "direccion": "Bruxelles",
+    "nota": "Barra de ensaladas autoservicio dentro del supermercado. 100% para llevar."
+  },
+  {
+    "nombre": "Huggys Bruxelles Legrand",
+    "categoria": "Hamburguesería / Restaurante",
+    "direccion": "Bruxelles Legrand",
+    "nota": "Hamburguesas con opciones Halal, veganas, sin lactosa y apto para carritos de bebé."
+  }
+]

@@ -10,30 +10,23 @@
         header h1 { margin: 0; font-size: 2.25rem; font-weight: 800; }
         header p { margin: 0.5rem 0 0 0; color: #ccfbf1; font-size: 1.125rem; }
         main { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; box-sizing: border-box; }
-        
         .panel { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         @media (min-width: 768px) { .panel { grid-template-columns: 1fr 1fr; } }
-        
         .campo { background-color: #f9fafb; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
         .campo label { display: block; font-size: 0.875rem; font-weight: 700; color: #047857; text-transform: uppercase; margin-bottom: 0.5rem; }
         .campo label.gris { color: #4b5563; }
-        
         select, input[type="text"] { width: 100%; padding: 0.75rem; background: white; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; }
         select:focus, input[type="text"]:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
-        
         .btn-buscar { width: 100%; background-color: #f97316; color: white; font-weight: 700; padding: 0.75rem; border: none; border-radius: 0.5rem; font-size: 1rem; cursor: pointer; margin-top: 0.75rem; transition: background-color 0.15s; }
         .btn-buscar:hover { background-color: #ea580c; }
-        
         #mensajeEstado { text-align: center; padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; font-weight: 500; border: 1px solid #fef3c7; background-color: #fffbeb; color: #b45309; }
         #mensajeEstado.exito { background-color: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
         #mensajeEstado.carga { background-color: #eff6ff; border-color: #bfdbfe; color: #1e40af; animation: pulse 2s infinite; }
         #mensajeEstado.error { background-color: #fef2f2; border-color: #fca5a5; color: #991b1b; }
-        
         h2.titulo { font-size: 1.5rem; font-weight: 900; margin-bottom: 1.5rem; display: none; }
         .grid-tarjetas { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         @media (min-width: 640px) { .grid-tarjetas { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .grid-tarjetas { grid-template-columns: repeat(3, 1fr); } }
-        
         .tarjeta { background: white; padding: 1.5rem; border-radius: 1rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; box-sizing: border-box; }
         .tarjeta:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         .tarjeta-header { display: flex; justify-content: space-between; align-items: start; gap: 0.75rem; }
@@ -41,34 +34,34 @@
         .badge { background-color: #d1fae5; color: #065f46; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.625rem; border-radius: 0.375rem; text-transform: uppercase; white-space: nowrap; border: 1px solid #a7f3d0; }
         .direccion { color: #6b7280; font-size: 0.875rem; margin: 0.75rem 0; display: flex; align-items: start; gap: 0.5rem; line-height: 1.4; }
         .nota { margin-top: 1rem; padding: 0.75rem; background-color: #fefaf0; border-left: 4px solid #f59e0b; border-radius: 0 0.5rem 0.5rem 0; font-size: 0.75rem; color: #92400e; font-weight: 500; }
-        
         .btn-maps { display: inline-flex; width: 100%; justify-content: center; align-items: center; gap: 0.5rem; background-color: #2563eb; color: white; font-weight: 600; font-size: 0.875rem; padding: 0.75rem 1rem; border-radius: 0.75rem; text-decoration: none; margin-top: 1.25rem; box-sizing: border-box; text-align: center; }
         .btn-maps:hover { background-color: #1d4ed8; }
+        .sin-resultados { text-align:center; color:#6b7280; padding:2rem; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 
     <script>
-        // Declaración global de variables de configuración de tu repositorio público en GitHub
-        const GITHUB_USER = "carbelto"; 
+        // ===== CONFIGURA AQUÍ TU REPOSITORIO DE GITHUB =====
+        const GITHUB_USER = "carbelto";
         const GITHUB_REPO = "gluten-free";
-        const GITHUB_BRANCH = "main"; 
+        const GITHUB_BRANCH = "main";
+        // Los archivos deben llamarse: lugares_brujas.json, lugares_bruselas.json, lugares_gante.json
+        // ===================================================
 
         let lugaresActuales = [];
 
-        // Función principal asíncrona de consulta
         async function lanzarConsulta() {
-            const selectCiudad = document.getElementById('selectorCiudad');
-            if (!selectCiudad) return;
-            
-            const ciudad = selectCiudad.value;
+            const ciudad = document.getElementById('selectorCiudad').value;
             const mensajeEstado = document.getElementById('mensajeEstado');
             const tituloResultados = document.getElementById('tituloResultados');
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            if (!ciudad || ciudad === "") {
+            if (!ciudad) {
                 mensajeEstado.className = "error";
                 mensajeEstado.innerHTML = "⚠️ Por favor, selecciona primero una ciudad en el menú desplegable.";
+                tituloResultados.style.display = 'none';
+                contenedor.innerHTML = '';
                 return;
             }
 
@@ -76,38 +69,51 @@
             contenedor.innerHTML = '';
             tituloResultados.style.display = 'none';
 
+            const nombreCiudad = ciudad.charAt(0).toUpperCase() + ciudad.slice(1);
             mensajeEstado.className = "carga";
-            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${ciudad.toUpperCase()}</b> desde GitHub...`;
+            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${nombreCiudad}</b> desde GitHub...`;
 
-            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
+            const urlJson = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
 
             try {
                 const respuesta = await fetch(urlJson);
                 if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+                const datos = await respuesta.json();
 
-                const datosGeoJson = await respuesta.json();
-                
-                // Mapeo seguro y robusto libre de corchetes vacíos o expresiones inválidas de asignación ternaria
-                lugaresActuales = datosGeoJson.features.map(feature => {
-                    const prop = feature.properties;
-                    
-                    // Extracción segura del array de geometría nativa de OpenStreetMap
-                    let latitud = 0;
-                    let longitud = 0;
+                lugaresActuales = normalizar(datos, ciudad);
+
+                tituloResultados.style.display = 'block';
+                tituloResultados.textContent = 'Locales en ' + nombreCiudad;
+                mensajeEstado.className = "exito";
+                mensajeEstado.innerHTML = `🎉 ¡Éxito! Se han cargado <b>${lugaresActuales.length} locales</b> de ${nombreCiudad} desde GitHub.`;
+                mostrarLugares(lugaresActuales);
+
+            } catch (error) {
+                mensajeEstado.className = "error";
+                mensajeEstado.innerHTML = `❌ Error: No se pudo leer el archivo desde GitHub. Comprueba que exista <code style="background:#fff;padding:2px 4px;border-radius:4px;">lugares_${ciudad}.json</code> en tu repositorio y que los datos de <code style="background:#fff;padding:2px 4px;border-radius:4px;">GITHUB_USER / GITHUB_REPO / GITHUB_BRANCH</code> sean correctos.`;
+                console.error(error);
+            }
+        }
+
+        // Soporta ambos formatos: GeoJSON de OpenStreetMap (con .features)
+        // y lista simple ya preparada [{nombre, categoria, direccion, nota}]
+        function normalizar(datos, ciudad) {
+            const nombreCiudad = ciudad.charAt(0).toUpperCase() + ciudad.slice(1);
+
+            if (datos && Array.isArray(datos.features)) {
+                return datos.features.map(feature => {
+                    const prop = feature.properties || {};
+                    let lat = null, lon = null;
                     if (feature.geometry && feature.geometry.coordinates) {
-                        longitud = feature.geometry.coordinates[0];
-                        latitud = feature.geometry.coordinates[1];
+                        lon = feature.geometry.coordinates[0];
+                        lat = feature.geometry.coordinates[1];
                     }
 
-                    let calle = prop["addr:street"] || "";
-                    let numero = prop["addr:housenumber"] || "";
-                    let direccionFinal = calle;
-                    if (numero) direccionFinal += ` ${numero}`;
-                    if (prop["addr:city"]) {
-                        direccionFinal += `, ${prop["addr:city"]}`;
-                    } else {
-                        direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
-                    }
+                    let direccion = prop["addr:street"] || "";
+                    if (prop["addr:housenumber"]) direccion += ` ${prop["addr:housenumber"]}`;
+                    if (prop["addr:city"]) direccion += `, ${prop["addr:city"]}`;
+                    else if (direccion) direccion += `, ${nombreCiudad}`;
+                    else direccion = nombreCiudad;
 
                     let categoria = "Restaurante";
                     if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería";
@@ -116,39 +122,100 @@
                     else if (prop.cuisine === "pizza") categoria = "Pizzería";
                     else if (prop.cuisine === "burger") categoria = "Hamburguesería";
 
-                    let opcionesAdicionales = [];
-                    if (prop["diet:lactose_free"] === "yes") opcionesAdicionales.push("Sin lactosa");
-                    if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") opcionesAdicionales.push("Vegano");
-                    if (prop["diet:vegetarian"] === "yes" || prop["diet:vegetarian"] === "only") opcionesAdicionales.push("Vegetariano");
-                    if (prop.takeaway === "only") opcionesAdicionales.push("Solo para llevar");
-                    
-                    let notaFinal = opcionesAdicionales.length > 0 
-                        ? `Opciones: ${opcionesAdicionales.join(", ")}.` 
-                        : "Establecimiento con opciones sin gluten verificadas.";
+                    const ops = [];
+                    if (prop["diet:lactose_free"] === "yes") ops.push("Sin lactosa");
+                    if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") ops.push("Vegano");
+                    if (prop["diet:vegetarian"] === "yes" || prop["diet:vegetarian"] === "only") ops.push("Vegetariano");
+                    if (prop.takeaway === "only") ops.push("Solo para llevar");
+                    const nota = ops.length ? `Opciones: ${ops.join(", ")}.` : "Establecimiento con opciones sin gluten verificadas.";
 
-                    return {
-                        nombre: prop.name || "Establecimiento",
-                        categoria: categoria,
-                        direccion: direccionFinal,
-                        nota: notaFinal,
-                        lat: latitud, 
-                        lon: longitud  
-                    };
+                    return { nombre: prop.name || "Establecimiento", categoria, direccion: direccion.replace(/^,\s*/, ""), nota, lat, lon };
                 });
-
-                tituloResultados.style.display = 'block';
-                mensajeEstado.className = "exito";
-                mensajeEstado.innerHTML = `🎉 ¡Éxito! Se han cargado <b>${lugaresActuales.length} locales</b> automáticamente desde GitHub.`;
-
-                mostrarLugares(lugaresActuales);
-
-            } catch (error) {
-                mensajeEstado.className = "error";
-                mensajeEstado.innerHTML = `❌ Error: No se pudo leer el archivo de GitHub. Comprueba que el archivo en tu repositorio se llame exactamente <code style="background:#fff;padding:2px 4px;border-radius:4px;">lugares_${ciudad}.json</code>.`;
-                console.error(error);
             }
+
+            if (Array.isArray(datos)) {
+                return datos.map(item => ({
+                    nombre: item.nombre || "Establecimiento",
+                    categoria: item.categoria || "Restaurante",
+                    direccion: item.direccion || nombreCiudad,
+                    nota: item.nota || "Establecimiento con opciones sin gluten verificadas.",
+                    lat: item.lat != null ? item.lat : null,
+                    lon: item.lon != null ? item.lon : null
+                }));
+            }
+
+            return [];
+        }
+
+        function filtrar() {
+            const q = document.getElementById('buscador').value.toLowerCase().trim();
+            if (!q) { mostrarLugares(lugaresActuales); return; }
+            const filtrados = lugaresActuales.filter(l =>
+                (l.nombre || '').toLowerCase().includes(q) ||
+                (l.categoria || '').toLowerCase().includes(q) ||
+                (l.direccion || '').toLowerCase().includes(q)
+            );
+            mostrarLugares(filtrados);
+        }
+
+        function mapsUrl(l) {
+            if (l.lat != null && l.lon != null) {
+                return 'https://www.google.com/maps/search/?api=1&query=' + l.lat + ',' + l.lon;
+            }
+            return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent((l.nombre || '') + ' ' + (l.direccion || ''));
+        }
+
+        function escapar(s) {
+            return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
 
         function mostrarLugares(lugares) {
-
-        
+            const contenedor = document.getElementById('listaLugares');
+            if (!lugares.length) {
+                contenedor.innerHTML = '<p class="sin-resultados">No se han encontrado locales para esta búsqueda.</p>';
+                return;
+            }
+            contenedor.innerHTML = lugares.map(l => `
+                <div class="tarjeta">
+                    <div>
+                        <div class="tarjeta-header">
+                            <h3>${escapar(l.nombre)}</h3>
+                            <span class="badge">${escapar(l.categoria)}</span>
+                        </div>
+                        <p class="direccion">📍 ${escapar(l.direccion)}</p>
+                        <div class="nota">🌾 ${escapar(l.nota)}</div>
+                    </div>
+                    <a class="btn-maps" href="${mapsUrl(l)}" target="_blank" rel="noopener">Ver en Google Maps</a>
+                </div>
+            `).join('');
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>🌾 Buscador Sin Gluten</h1>
+        <p>Locales con opciones sin gluten en Bélgica</p>
+    </header>
+    <main>
+        <div class="panel">
+            <div class="campo">
+                <label for="selectorCiudad">1. Elige la ciudad</label>
+                <select id="selectorCiudad">
+                    <option value="">-- Selecciona una ciudad --</option>
+                    <option value="brujas">Brujas</option>
+                    <option value="bruselas">Bruselas</option>
+                    <option value="gante">Gante</option>
+                </select>
+                <button class="btn-buscar" onclick="lanzarConsulta()">Mostrar locales</button>
+            </div>
+            <div class="campo">
+                <label class="gris" for="buscador">2. Filtra por nombre o tipo</label>
+                <input type="text" id="buscador" placeholder="Ej: pizza, panadería, Domino's..." oninput="filtrar()">
+            </div>
+        </div>
+        <div id="mensajeEstado">👆 Selecciona una ciudad y pulsa "Mostrar locales".</div>
+        <h2 class="titulo" id="tituloResultados">Resultados</h2>
+        <div class="grid-tarjetas" id="listaLugares"></div>
+    </main>
+</body>
+</html>

@@ -10,27 +10,27 @@
 <body class="bg-gray-100 text-gray-800 min-h-screen antialiased">
 
     <!-- Encabezado Principal -->
-    <header class="bg-linear-to-r from-emerald-600 to-teal-700 text-white py-10 shadow-lg text-center">
+    <header class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-10 shadow-lg text-center">
         <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-xs">🇧🇪 Guía Sin Gluten</h1>
         <p class="text-emerald-100 mt-2 text-lg">Tu comida segura en Bruselas, Gante y Brujas</p>
     </header>
 
     <main class="max-w-5xl mx-auto p-4 sm:p-8">
         
-        <!-- FLUJO DE PASOS (Sección Superior) -->
+        <!-- Panel de Filtros -->
         <div class="bg-white rounded-2xl shadow-md p-6 mb-8 border border-gray-200">
             <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                🚀 Panel de Configuración
+                🚀 Panel de Búsqueda
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <!-- PASO 1: Selector de Ciudad -->
+                <!-- Selector de Ciudad -->
                 <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                     <label class="block text-sm font-bold text-emerald-700 uppercase tracking-wider mb-2">
                         1. Elige una Ciudad
                     </label>
-                    <select id="selectorCiudad" onchange="cambiarCiudad()" class="w-full p-3 bg-white border border-gray-300 rounded-lg font-medium shadow-xs focus:ring-2 focus:ring-emerald-500 focus:outline-hidden cursor-pointer transition-all">
+                    <select id="selectorCiudad" onchange="cambiarCiudad()" class="w-full p-3 bg-white border border-gray-300 rounded-lg font-medium shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none cursor-pointer transition-all">
                         <option value="" disabled selected>Selecciona destino...</option>
                         <option value="bruselas">Bruselas</option>
                         <option value="gante">Gante</option>
@@ -38,28 +38,20 @@
                     </select>
                 </div>
 
-                <!-- PASO 2: Subida del JSON -->
-                <div id="panelCarga" class="bg-gray-50 p-4 rounded-xl border border-gray-200 opacity-40 pointer-events-none transition-all duration-300">
-                    <label id="etiquetaCarga" class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">
-                        2. Carga el archivo JSON
-                    </label>
-                    <input type="file" id="inputJson" accept=".json" onchange="cargarArchivoJson()" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:uppercase file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 file:transition-colors cursor-pointer">
-                </div>
-
-                <!-- PASO 3: Buscador en Tiempo Real -->
+                <!-- Buscador en Tiempo Real -->
                 <div id="panelBusqueda" class="bg-gray-50 p-4 rounded-xl border border-gray-200 opacity-40 pointer-events-none transition-all duration-300">
                     <label class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">
-                        3. Filtrar por Nombre o Tipo
+                        2. Filtrar por Nombre o Tipo
                     </label>
-                    <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Panadería, Nombre..." class="w-full p-2.5 bg-white border border-gray-300 rounded-lg shadow-xs focus:ring-2 focus:ring-emerald-500 focus:outline-hidden placeholder-gray-400">
+                    <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Hamburguesa, Nombre..." class="w-full p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder-gray-400">
                 </div>
 
             </div>
         </div>
 
         <!-- BARRA DE ESTADO / MENSAJES INFORMATIVOS -->
-        <div id="mensajeEstado" class="text-center py-4 px-6 text-gray-600 bg-amber-50 border border-amber-200 rounded-xl mb-8 font-medium shadow-xs transition-all">
-            👋 ¡Bienvenido! Por favor, selecciona una ciudad en el <b>Paso 1</b> para comenzar a cargar los datos.
+        <div id="mensajeEstado" class="text-center py-4 px-6 text-gray-600 bg-amber-50 border border-amber-200 rounded-xl mb-8 font-medium shadow-sm transition-all">
+            👋 ¡Bienvenido! Por favor, selecciona una ciudad para descargar los datos desde GitHub.
         </div>
 
         <!-- CONTENEDOR DE TARJETAS (Sección Inferior) -->
@@ -73,72 +65,110 @@
     </main>
 
     <script>
-        // Memoria interna de la aplicación
-        let lugaresBase = [];
-        let ciudadSeleccionada = '';
+        // =========================================================================
+        // CONFIGURACIÓN DE TU REPOSITORIO DE GITHUB
+        // Cambia estos dos valores por los tuyos reales en GitHub
+        // =========================================================================
+        const GITHUB_USER = "TU_USUARIO_DE_GITHUB"; 
+        const GITHUB_REPO = "NOMBRE_DE_TU_REPOSITORIO";
+        const GITHUB_BRANCH = "main"; // Cambia a "master" si tu rama principal se llama así
+        // =========================================================================
 
-        // Se ejecuta al cambiar la ciudad (Paso 1)
-        function cambiarCiudad() {
-            ciudadSeleccionada = document.getElementById('selectorCiudad').value;
-            
-            // Referencias de interfaz
-            const panelCarga = document.getElementById('panelCarga');
-            const etiquetaCarga = document.getElementById('etiquetaCarga');
-            const mensajeEstado = document.getElementById('mensajeEstado');
-            const inputJson = document.getElementById('inputJson');
+        let lugaresActuales = [];
+
+        // Función que descarga el JSON correspondiente desde GitHub en tiempo real
+        async function cambiarCiudad() {
+            const ciudad = document.getElementById('selectorCiudad').value;
             const panelBusqueda = document.getElementById('panelBusqueda');
+            const mensajeEstado = document.getElementById('mensajeEstado');
             const tituloResultados = document.getElementById('tituloResultados');
-            
-            // Reiniciar estados anteriores
-            inputJson.value = '';
-            lugaresBase = [];
-            mostrarLugares(lugaresBase);
+            const buscador = document.getElementById('buscador');
+            const contenedor = document.getElementById('listaLugares');
+
+            // Limpiar estados previos
+            buscador.value = '';
+            contenedor.innerHTML = '';
             tituloResultados.classList.add('hidden');
-
-            // Desbloquear Paso 2 y bloquear Paso 3 hasta que suban el archivo
-            panelCarga.classList.remove('opacity-40', 'pointer-events-none');
-            etiquetaCarga.classList.replace('text-gray-500', 'text-emerald-700');
-            
             panelBusqueda.classList.add('opacity-40', 'pointer-events-none');
-            document.getElementById('buscador').value = '';
-            
-            // Actualizar mensaje de guía
-            mensajeEstado.className = "text-center py-4 px-6 text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl mb-8 font-semibold animate-pulse";
-            mensajeEstado.innerHTML = `📍 Has seleccionado <b>${ciudadSeleccionada.toUpperCase()}</b>. Ahora ve al Paso 2 y sube tu archivo <u>lugares_${ciudadSeleccionada}.json</u>`;
-        }
 
-        // Se ejecuta al subir el archivo JSON (Paso 2)
-        function cargarArchivoJson() {
-            const fileInput = document.getElementById('inputJson');
-            const mensajeEstado = document.getElementById('mensajeEstado');
-            const panelBusqueda = document.getElementById('panelBusqueda');
-            const tituloResultados = document.getElementById('tituloResultados');
-            const file = fileInput.files[0];
+            // Mostrar estado de carga animado
+            mensajeEstado.className = "text-center py-4 px-6 text-blue-800 bg-blue-50 border border-blue-200 rounded-xl mb-8 font-semibold animate-pulse";
+            mensajeEstado.innerHTML = `⏳ Descargando datos de <b>${ciudad.toUpperCase()}</b> desde GitHub...`;
 
-            if (!file) return;
+            // Construir la URL Raw de GitHub para el archivo correspondiente
+            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    // Procesar los datos del archivo
-                    lugaresBase = JSON.parse(e.target.result);
-                    
-                    // Activar el Paso 3 (Buscador)
-                    panelBusqueda.classList.remove('opacity-40', 'pointer-events-none');
-                    
-                    // Notificar éxito al usuario
-                    mensajeEstado.className = "text-center py-4 px-6 text-blue-800 bg-blue-50 border border-blue-200 rounded-xl mb-8 font-medium shadow-xs";
-                    mensajeEstado.innerHTML = `🎉 ¡Correcto! Se han cargado <b>${lugaresBase.length} locales</b> sin gluten para ${ciudadSeleccionada.toUpperCase()}. Ya puedes usar el buscador dinámico.`;
-                    
-                    tituloResultados.classList.remove('hidden');
-                    mostrarLugares(lugaresBase);
-                } catch (error) {
-                    mensajeEstado.className = "text-center py-4 px-6 text-red-800 bg-red-50 border border-red-200 rounded-xl mb-8 font-medium";
-                    mensajeEstado.innerHTML = "❌ <b>Error de lectura:</b> El archivo no es un JSON válido. Asegúrate de copiar el formato correcto sin letras extrañas fuera de los corchetes.";
-                    tituloResultados.classList.add('hidden');
+            try {
+                const respuesta = await fetch(urlJson);
+                
+                if (!respuesta.ok) {
+                    throw new Error(`No se pudo encontrar el archivo lugares_${ciudad}.json`);
                 }
-            };
-            reader.readAsText(file);
+
+                // El archivo original de Overpass-Turbo viene en formato GeoJSON (FeatureCollection)
+                const datosGeoJson = await respuesta.json();
+                
+                // Mapear y transformar el GeoJSON en tiempo real al formato limpio de tarjetas
+                lugaresActuales = datosGeoJson.features.map(feature => {
+                    const prop = feature.properties;
+                    const coords = feature.geometry.coordinates;
+
+                    // Unificar dirección (Calle + Número)
+                    let direccionFinal = prop["addr:street"] || "";
+                    if (prop["addr:housenumber"]) {
+                        direccionFinal += ` ${prop["addr:housenumber"]}`;
+                    }
+                    if (prop["addr:city"]) {
+                        direccionFinal += `, ${prop["addr:city"]}`;
+                    } else {
+                        // Respaldo de ciudad si no viene explícita en las etiquetas
+                        direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
+                    }
+
+                    // Determinar una categoría amigable
+                    let categoria = "Restaurante";
+                    if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería / Pastelería";
+                    else if (prop.amenity === "cafe") categoria = "Cafetería";
+                    else if (prop.amenity === "fast_food") categoria = "Comida Rápida";
+                    else if (prop.cuisine === "pizza") categoria = "Pizzería";
+                    else if (prop.cuisine === "burger") categoria = "Hamburguesería";
+
+                    // Construir notas basadas en las etiquetas dietéticas
+                    let notasArray = [];
+                    if (prop["diet:lactose_free"] === "yes") notasArray.push("Sin lactosa");
+                    if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") notasArray.push("Vegano");
+                    if (prop["diet:vegetarian"] === "yes" || prop["diet:vegetarian"] === "only") notasArray.push("Vegetariano");
+                    if (prop.takeaway === "only") notasArray.push("Solo para llevar");
+                    
+                    let notaFinal = notasArray.length > 0 
+                        ? `Opciones disponibles: ${notasArray.join(", ")}.` 
+                        : "Opciones sin gluten verificadas.";
+
+                    // Retornar el objeto estructurado listo para la interfaz, guardando también coordenadas exactas
+                    return {
+                        nombre: prop.name || "Establecimiento sin nombre",
+                        categoria: categoria,
+                        direccion: direccionFinal,
+                        nota: notaFinal,
+                        lat: coords[1],
+                        lon: coords[0]
+                    };
+                });
+
+                // Activar componentes visuales tras la carga exitosa
+                panelBusqueda.classList.remove('opacity-40', 'pointer-events-none');
+                tituloResultados.classList.remove('hidden');
+
+                mensajeEstado.className = "text-center py-4 px-6 text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl mb-8 font-semibold shadow-sm";
+                mensajeEstado.innerHTML = `🎉 ¡Conectado! Se han cargado <b>${lugaresActuales.length} locales</b> en tiempo real desde tu GitHub.`;
+
+                mostrarLugares(lugaresActuales);
+
+            } catch (error) {
+                mensajeEstado.className = "text-center py-4 px-6 text-red-800 bg-red-50 border border-red-200 rounded-xl mb-8 font-semibold";
+                mensajeEstado.innerHTML = `❌ <b>Error de conexión:</b> No se pudo leer el archivo. Revisa que las variables <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_USER</code> y <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_REPO</code> estén bien escritas y el repositorio sea público.`;
+                console.error(error);
+            }
         }
 
         // Dibuja las tarjetas de los locales en pantalla
@@ -147,23 +177,3 @@
             contenedor.innerHTML = '';
 
             if (lugares.length === 0) {
-                if(document.getElementById('selectorCiudad').value !== "" && document.getElementById('inputJson').files.length > 0) {
-                    contenedor.innerHTML = `<p class="col-span-full text-center text-gray-400 py-12 font-medium">🔍 No hay ningún local que coincida con ese término de búsqueda.</p>`;
-                }
-                return;
-            }
-
-            lugares.forEach(lugar => {
-                // Generar enlace limpio de Google Maps usando Dirección + Nombre del local
-                const queryMaps = encodeURIComponent(`${lugar.nombre}, ${lugar.direccion}`);
-                const urlMaps = `https://google.com{queryMaps}`;
-
-                const tarjeta = `
-                    <div class="bg-white p-6 rounded-2xl shadow-xs border border-gray-200 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group">
-                        <div>
-                            <div class="flex justify-between items-start gap-3">
-                                <h3 class="text-xl font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">${lugar.nombre}</h3>
-                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold tracking-wide uppercase px-2.5 py-1 rounded-md shrink-0 border border-emerald-200">${lugar.categoria || 'Restaurante'}</span>
-                            </div>
-                            <p class="text-gray-500 text-sm mt-3 flex items-start gap-2 leading-relaxed">
-                                <span class="text-base shrink-0 text-emerald-600">📍</span>

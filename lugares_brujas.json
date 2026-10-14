@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo-adapted",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nomad",
+        "amenity": "restaurant",
+        "cuisine": "international",
+        "addr:street": "'t Zand",
+        "addr:housenumber": "12",
+        "addr:city": "Brugge",
+        "diet:gluten_free": "yes",
+        "website": "https://nomadbrugge.be",
+        "distancia_centro": "600 m",
+        "nota_local": "Opciones vegetarianas y opciones veganas limitadas.",
+        "nota_usuario": "Google: ⭐ 4.5. Opinión: 'Lugar fantástico para desayunar o comer en la terraza. La carta especifica claramente qué platos son celíacos o adaptables y cuidan mucho la contaminación.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.2181, 51.2057]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "De Stoepa",
+        "amenity": "restaurant",
+        "cuisine": "local",
+        "addr:street": "Oostmeers",
+        "addr:housenumber": "124",
+        "addr:city": "Brugge",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "950 m",
+        "nota_local": "Dispone de terraza/patio exterior. Opciones vegetarianas disponibles.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Tienen un jardín interior precioso. Pregunté al camarero y adaptaron los platos típicos estofados al estilo belga con salsas e ingredientes sin gluten.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.2204, 51.2002]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bohemian Burgers",
+        "amenity": "fast_food",
+        "cuisine": "burger",
+        "addr:street": "Sint-Amandsstraat",
+        "addr:housenumber": "24",
+        "addr:city": "Brugge",
+        "diet:gluten_free": "yes",
+        "website": "https://bohemianburgers.be",
+        "distancia_centro": "140 m",
+        "nota_local": "Opciones vegetarianas y veganas disponibles.",
+        "nota_usuario": "Google: ⭐ 4.6. Opinión: 'Las hamburguesas están riquísimas y te ponen pan apto de calidad. Me aseguraron que hacen las patatas fritas en freidoras totalmente separadas.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.2224, 51.2085]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Frituur Royal",
+        "amenity": "fast_food",
+        "cuisine": "friture",
+        "addr:street": "Langestraat",
+        "addr:housenumber": "181A",
+        "addr:city": "Brugge",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "1.1 km",
+        "nota_local": "Patatas fritas tradicionales belgas. Opciones vegetarianas y Halal.",
+        "nota_usuario": "Google: ⭐ 4.3. Opinión: 'Imprescindible si vienes a Brujas. Tienen una freidora dedicada en exclusiva para patatas fritas sin gluten y controlan qué salsas de bote son aptas.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.2392, 51.2125]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Otto Waffle Boutique",
+        "amenity": "cafe",
+        "shop": "pastry",
+        "addr:street": "Katelijnestraat",
+        "addr:housenumber": "1",
+        "addr:city": "Brugge",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "550 m",
+        "nota_local": "Gofres belgas artesanales.",
+        "nota_usuario": "Google: ⭐ 4.5. Opinión: 'Hacen gofres belgas con base de avena naturalmente libre de gluten y con formas muy bonitas. Están deliciosos y el sitio es muy limpio.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.2263, 51.2034]
+      }
+    }
+  ]
+}

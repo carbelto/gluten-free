@@ -1,0 +1,124 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo-adapted",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chambelland Ixelles",
+        "amenity": "bakery",
+        "shop": "bakery",
+        "addr:street": "Rue de l'Université",
+        "addr:housenumber": "42",
+        "addr:city": "Ixelles",
+        "diet:gluten_free": "yes",
+        "website": "https://chambelland.com",
+        "distancia_centro": "2.8 km",
+        "nota_local": "Panadería 100% libre de gluten.",
+        "nota_usuario": "Google: ⭐ 4.6. Opinión: 'Un paraíso absoluto para celíacos. El pan de trigo sarraceno y la bollería son espectaculares, todo el obrador es 100% libre de gluten y seguro.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.3768, 50.8231]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Veganwaf'",
+        "amenity": "cafe",
+        "shop": "pastry",
+        "addr:street": "Galerie Agora",
+        "addr:housenumber": "48",
+        "addr:city": "Brussel",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "distancia_centro": "150 m",
+        "nota_local": "Cafetería pequeña de gofres para llevar.",
+        "nota_usuario": "Google: ⭐ 4.7. Opinión: 'Los mejores gofres sin gluten y veganos que probarás en Bélgica. Crujientes por fuera, tiernos por dentro y hechos al momento de forma segura.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.3547, 50.8469]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Sister Brussels Café",
+        "amenity": "cafe",
+        "addr:street": "Rue Chair et Pain",
+        "addr:housenumber": "3",
+        "addr:city": "Brussel",
+        "diet:gluten_free": "yes",
+        "diet:vegetarian": "yes",
+        "website": "https://thesistercafe-brussels.com",
+        "distancia_centro": "80 m",
+        "nota_local": "Cafetería ecológica céntrica.",
+        "nota_usuario": "Google: ⭐ 4.3. Opinión: 'Súper cerca de la Grand-Place. Menú bio muy amplio y adaptado, tienen pan de focaccia casero sin gluten delicioso y cerveza artesana apta.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.3524, 50.8475]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Horia - Oriental Natural Eatery",
+        "amenity": "restaurant",
+        "cuisine": "oriental;organic;lebanese",
+        "addr:street": "Borgwal",
+        "addr:housenumber": "7",
+        "addr:city": "Brussel",
+        "diet:gluten_free": "yes",
+        "diet:organic": "yes",
+        "distancia_centro": "350 m",
+        "nota_local": "Restaurante de cocina orgánica de inspiración libanesa.",
+        "nota_usuario": "Google: ⭐ 4.5. Opinión: 'Comida libanesa y marroquí orgánica excelente. El personal te explica de maravilla los alérgenos y casi toda la carta es apta de forma natural.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.3483, 50.8476]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Il Veliero",
+        "amenity": "restaurant",
+        "cuisine": "pizza;pasta",
+        "addr:street": "Rue Général Leman",
+        "addr:housenumber": "15",
+        "addr:city": "Etterbeek",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "3.1 km",
+        "nota_local": "Restaurante italiano clásico.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Tienen un menú sin gluten independiente preparado con mucho cuidado. Las pizzas y los platos de pasta con salsas caseras merecen totalmente el viaje.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.3871, 50.8322]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HUGGYS Burgers Louise",
+        "amenity": "fast_food",
+        "cuisine": "burger",
+        "addr:street": "Rue Jourdan",
+        "addr:housenumber": "8",
+        "addr:city": "Ixelles",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "1.6 km",
+        "nota_local": "Sitio de comida rápida gourmet.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Hamburguesas gourmet espectaculares. Disponen de un pan sin gluten exquisito que no se rompe y un protocolo muy estricto en cocina para alérgenos.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.3571, 50.8344]
+      }
+    }
+  ]
+}

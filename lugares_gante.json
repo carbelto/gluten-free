@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo-adapted",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chambelland Gent",
+        "amenity": "bakery",
+        "shop": "bakery",
+        "addr:street": "François Laurentplein",
+        "addr:housenumber": "4",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "450 m",
+        "nota_local": "Opciones sin lactosa y veganas disponibles.",
+        "nota_usuario": "Google: ⭐ 4.7. Opinión: 'Obrador artesanal 100% libre de gluten. Comprar pan, dulces de hojaldre o sentarte a tomar un café con tranquilidad absoluta no tiene precio.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7279, 51.0512]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Le Botaniste",
+        "amenity": "restaurant",
+        "addr:street": "Hoornstraat",
+        "addr:housenumber": "13",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "website": "https://lebotaniste.eu",
+        "distancia_centro": "250 m",
+        "nota_local": "Establecimiento 100% vegetariano y vegano.",
+        "nota_usuario": "Google: ⭐ 4.6. Opinión: 'Comida orgánica en un local precioso. Casi toda la carta es apta sin gluten por defecto, los boles calientes de quinoa y las salsas son brutales.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7211, 51.0521]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Epiphany's Kitchen",
+        "amenity": "restaurant",
+        "addr:street": "Burgstraat",
+        "addr:housenumber": "10",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "website": "https://epiphanyskitchen.com",
+        "distancia_centro": "400 m",
+        "nota_local": "Cocina con opciones sin lactosa, vegetarianas y veganas.",
+        "nota_usuario": "Google: ⭐ 4.5. Opinión: 'El paraíso de la pizza para celíacos. Su masa casera sin gluten está riquísima e inflada, nada acartonada. El sitio está súper decorado con flores.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7194, 51.0567]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Catberry",
+        "amenity": "cafe",
+        "shop": "pastry",
+        "addr:street": "Sint-Margrietstraat",
+        "addr:housenumber": "34",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "distancia_centro": "650 m",
+        "nota_local": "Establecimiento 100% vegano y sin gluten. Se recomienda reservar.",
+        "nota_usuario": "Google: ⭐ 4.8. Opinión: 'Una cafetería encantadora de repostería vegana y sin gluten. Los pasteles y bizcochos de vitrina están esponjosos y espectaculares.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7225, 51.0588]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eetoile",
+        "amenity": "fast_food",
+        "cuisine": "wrap;salad;soup",
+        "addr:street": "Oudenaardsesteenweg",
+        "addr:housenumber": "34",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "distancia_centro": "3.2 km",
+        "nota_local": "Bar de comida saludable. Wraps, ensaladas y sopas. Opciones veganas.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Perfecto para comer algo rápido, sano y sin riesgos. Los boles de ensaladas completas y sopas calientes están muy bien detallados para alérgenos.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7093, 51.0247]
+      }
+    }
+  ]
+}

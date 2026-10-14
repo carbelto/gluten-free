@@ -64,20 +64,11 @@
   .badge { background: var(--accent-soft); color: var(--accent-dark); font-size: .7rem; font-weight: 700;
     padding: 3px 9px; border-radius: 6px; text-transform: uppercase; white-space: nowrap; border: 1px solid transparent; }
   .badge.only { background: var(--accent); color: #fff; }
-  .rating { margin-top: 8px; display: flex; align-items: center; gap: 8px; font-size: .9rem; }
-  .stars { color: var(--star); letter-spacing: 1px; }
+  .nota-local-box { background: var(--bg); border-left: 3px solid var(--accent); padding: 6px 10px; margin-top: 8px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
+  .nota-usuario-box { background: var(--warn-bg); color: var(--warn-text); border-left: 3px solid var(--star); padding: 6px 10px; margin-top: 6px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
   .actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  .actions button { font-size: .8rem; padding: 5px 12px; }
   .actions a { color: var(--accent-dark); font-size: .8rem; font-weight: 600; text-decoration: none; }
   .actions a:hover { text-decoration: underline; }
-  dialog { border: 1px solid var(--border); border-radius: 14px; background: var(--card);
-    color: var(--text); width: min(480px, 92vw); padding: 18px; }
-  dialog::backdrop { background: rgba(0,0,0,.45); }
-  .starpick { font-size: 2rem; color: var(--star); cursor: pointer; user-select: none; }
-  textarea { width: 100%; min-height: 80px; margin: 8px 0; font: inherit; color: var(--text);
-    background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; }
-  .comment { border-top: 1px solid var(--border); padding: 8px 0; font-size: .9rem; }
-  .notice { font-size: .8rem; color: var(--muted); margin-top: 8px; }
   footer { font-size: .75rem; color: var(--muted); padding: 8px 16px 16px; text-align: center; }
   footer a { color: var(--accent-dark); }
   @media (max-width: 760px) {
@@ -101,11 +92,10 @@
   <label><input type="checkbox" id="onlyFilter"> Solo 100 % sin gluten</label>
   <label>Ordenar:
     <select id="sortSelect">
-      <option value="rating">Mejor valorados</option>
       <option value="name">Nombre (A-Z)</option>
     </select>
   </label>
-  <input type="text" id="textFilter" placeholder="Filtrar: pizza, panadería, Domino's…">
+  <input type="text" id="textFilter" placeholder="Filtrar: pizza, panadería…">
 </div>
 
 <main>
@@ -116,21 +106,8 @@
   Datos de lugares © colaboradores de <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.
 </footer>
 
-<dialog id="rateDialog">
-  <h3 id="rateTitle" style="margin-top:0"></h3>
-  <div id="starPick" class="starpick" aria-label="Puntuación"></div>
-  <textarea id="rateComment" maxlength="500" placeholder="Comentario (opcional)"></textarea>
-  <div style="display:flex; gap:8px; justify-content:flex-end">
-    <button type="button" class="secondary" id="rateCancel">Cancelar</button>
-    <button type="button" id="rateSave">Guardar valoración</button>
-  </div>
-  <div id="commentList"></div>
-  <div class="notice" id="storageNotice"></div>
-</dialog>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-const CONFIG = { SUPABASE_URL: "", SUPABASE_ANON_KEY: "" };
 const CITIES = {
   brujas:   { label: "Brujas",   query: "Brugge, Bélgica" },
   bruselas: { label: "Bruselas", query: "Bruxelles, Bélgica" },
@@ -148,21 +125,6 @@ function setStatus(html, kind) {
     el.className = kind || "";
     el.innerHTML = html;
   }
-}
-
-function starsText(n) {
-  const full = Math.round(n || 0);
-  return "★".repeat(full) + "☆".repeat(5 - full);
-}
-
-function rankScore(avg, count) {
-  const m = 3, prior = 3.5;
-  return (count / (count + m)) * (avg || 0) + (m / (count + m)) * prior;
-}
-
-function slugify(s) {
-  return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
 function centro(g) {
@@ -192,24 +154,19 @@ function buildPlace(t, lat, lon, osmId) {
   const street = String(t["addr:street"] || ""), housenumber = String(t["addr:housenumber"] || ""), city = String(t["addr:city"] || "");
   
   return {
-    id: osmId || `nombre/${slugify(t.name)}_${slugify(street)}`,
+    id: osmId || `nombre/${t.name}`,
     osm: osmId || "",
     name: String(t.name),
     kind: t.amenity || t.shop || "Local",
-    cuisine: t.cuisine || "",
     only: t["diet:gluten_free"] === "only" || t["diet:gluten_free"] === "yes",
-    extras: [],
     address: [street, housenumber, city].filter(Boolean).join(", "),
-    hours: t.opening_hours || "",
-    phone: t.phone || "",
     f: {
       amenity: t.amenity || t.shop || "",
-      cuisine: t.cuisine || "",
       street, housenumber, city,
-      gluten: t["diet:gluten_free"] || "yes",
       website: t.website || "",
       distancia: t.distancia_centro || "",
-      note: t.nota_usuario || t.nota_local || t.note || "",
+      nota_local: t.nota_local || "",
+      nota_usuario: t.nota_usuario || "",
       lat: hasCoords ? Number(lat) : "",
       lon: hasCoords ? Number(lon) : ""
     },
@@ -232,7 +189,6 @@ function normalizarPrecargado(datos) {
   }).filter(Boolean);
 }
 
-// Inicialización condicional de Mapa
 let map = null, markerLayer = null, markers = {};
 try {
   if (typeof L !== "undefined") {
@@ -240,10 +196,9 @@ try {
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
     markerLayer = L.layerGroup().addTo(map);
   }
-} catch(e) { console.warn("No se pudo cargar Leaflet:", e); }
+} catch(e) { console.warn("Leaflet error:", e); }
 
 let places = [];
-let summaries = {};
 let areaName = "";
 
 function mapsUrl(p) {
@@ -256,10 +211,7 @@ function visiblePlaces() {
   if ($("onlyFilter").checked) list = list.filter((p) => p.only);
   const q = $("textFilter").value.toLowerCase().trim();
   if (q) {
-    list = list.filter((p) => [p.name, p.kind, p.cuisine, p.address, p.f.note].some((v) => (v || "").toLowerCase().includes(q)));
-  }
-  if ($("sortSelect").value === "name") {
-    list.sort((a, b) => a.name.localeCompare(b.name, "es"));
+    list = list.filter((p) => [p.name, p.kind, p.address, p.f.nota_local, p.f.nota_usuario].some((v) => (v || "").toLowerCase().includes(q)));
   }
   return list;
 }
@@ -276,20 +228,21 @@ function render() {
     const card = document.createElement("div");
     card.className = "card";
     const web = urlSegura(p.f.website);
+    
     card.innerHTML = `
       <div class="card-head">
         <h2>${esc(p.name)}</h2>
         <span class="badge ${p.only ? "only" : ""}">${p.only ? "100 % sin gluten" : "Con opciones"}</span>
       </div>
       <dl class="campos">
-        ${fila("Tipo", esc(p.f.amenity))}
         ${fila("Dirección", esc(p.address))}
+        ${fila("Distancia centro", esc(p.f.distancia))}
         ${fila("Sitio web", web ? `<a href="${esc(web)}" target="_blank" rel="noopener">${esc(web)}</a>` : "")}
-        ${fila("Distancia", esc(p.f.distancia))}
-        ${fila("Notas", esc(p.f.note))}
       </dl>
+      ${p.f.nota_local ? `<div class="nota-local-box">💡 <strong>Nota del local:</strong> ${esc(p.f.nota_local)}</div>` : ""}
+      ${p.f.nota_usuario ? `<div class="nota-usuario-box">💬 <strong>Opinión de usuario:</strong> ${esc(p.f.nota_usuario)}</div>` : ""}
       <div class="actions">
-        <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">📍 Abrir en Google Maps</a>
       </div>`;
     
     if (map && p.lat != null) {
@@ -301,47 +254,4 @@ function render() {
     cards.appendChild(card);
 
     if (map && markerLayer && p.lat != null) {
-      const m = L.marker([p.lat, p.lon]).bindPopup(`<strong>${esc(p.name)}</strong>`);
-      m.addTo(markerLayer);
-      markers[p.id] = m;
-    }
-  });
-
-  if (map && list.length) {
-    const coords = list.filter(p => p.lat != null).map(p => [p.lat, p.lon]);
-    if (coords.length) map.fitBounds(coords, { padding: [20, 20] });
-  }
-
-  setStatus(list.length ? `🎉 ${list.length} sitios cargados en ${esc(areaName)}` : "No hay resultados.", "ok");
-}
-
-async function buscar(key) {
-  const city = CITIES[key];
-  if (!city) return;
-  
-  document.querySelectorAll(".chips button").forEach((b) => b.classList.toggle("active", b.dataset.city === key));
-  setStatus(`⏳ Cargando ${city.label}…`, "loading");
-  
-  try {
-    const res = await fetch(`${PRELOADED_PREFIX}${key}.json`);
-    if (!res.ok) throw new Error("No se pudo cargar el archivo local");
-    const data = await res.json();
-    places = normalizarPrecargado(data);
-    areaName = city.label;
-    render();
-  } catch (e) {
-    setStatus("❌ Error al cargar los datos: " + esc(e.message), "error");
-  }
-}
-
-document.querySelectorAll(".chips button").forEach((b) =>
-  b.addEventListener("click", () => buscar(b.dataset.city)));
-$("onlyFilter").addEventListener("change", render);
-$("sortSelect").addEventListener("change", render);
-$("textFilter").addEventListener("input", render);
-
-// Cargar la primera ciudad por defecto al iniciar
-buscar("bruselas");
-</script>
-</body>
-</html>
+      const m = L.marker([p.lat, p.lon]).bindPopup

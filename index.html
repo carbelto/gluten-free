@@ -226,7 +226,7 @@ function categoria(t) {
 const ETIQUETAS = {
   amenity: "Tipo de local", cuisine: "Tipo de cocina", street: "Calle", housenumber: "Número",
   city: "Ciudad", gluten: "Opciones sin gluten", website: "Sitio web", note: "Nota",
-  lat: "Latitud", lon: "Longitud"
+  distancia: "Distancia al centro", lat: "Latitud", lon: "Longitud"
 };
 
 const T_AMENITY = {
@@ -243,7 +243,7 @@ const T_COCINA = {
   chinese: "China", japanese: "Japonesa", korean: "Coreana", thai: "Tailandesa", vietnamese: "Vietnamita",
   indian: "India", pizza: "Pizza", burger: "Hamburguesas", pasta: "Pasta", sushi: "Sushi", ramen: "Ramen",
   noodle: "Fideos", wok: "Wok", kebab: "Kebab", sandwich: "Bocadillos", tapas: "Tapas", salad: "Ensaladas",
-  soup: "Sopas", seafood: "Marisco", fish: "Pescado", fish_and_chips: "Fish and chips",
+  soup: "Sopas", wrap: "Wraps", seafood: "Marisco", fish: "Pescado", fish_and_chips: "Fish and chips",
   steak_house: "Asador / parrilla", vegetarian: "Vegetariana", vegan: "Vegana", bistro: "Bistró",
   brasserie: "Brasserie", breakfast: "Desayunos", brunch: "Brunch", coffee_shop: "Cafetería", coffee: "Café",
   tea: "Té", bubble_tea: "Té de burbujas", cake: "Tartas", waffle: "Gofres", crepe: "Crepes",
@@ -304,11 +304,12 @@ function buildPlace(t, lat, lon, osmId) {
     phone: t.phone || t["contact:phone"] || "",
     /* Valores originales de los 9 campos que se muestran en la tarjeta */
     f: {
-      amenity: t.amenity || t.shop || "",
+      amenity: [...new Set([t.amenity, t.shop].filter(Boolean))].join(";"),
       cuisine: t.cuisine || "",
       street, housenumber, city,
       gluten: t["diet:gluten_free"] || "",
       website: t.website || t["contact:website"] || "",
+      distancia: t.distancia_centro || "",
       note: t.note || "",
       lat: hasCoords ? Number(lat) : "",
       lon: hasCoords ? Number(lon) : ""
@@ -560,13 +561,14 @@ function render() {
         <span class="badge ${p.only ? "only" : ""}">${p.only ? "100 % sin gluten" : "Con opciones"}</span>
       </div>
       <dl class="campos">
-        ${fila(ETIQUETAS.amenity, f.amenity && esc(traducir(T_AMENITY, f.amenity)))}
+        ${fila(ETIQUETAS.amenity, f.amenity && esc(traducirLista(T_AMENITY, f.amenity)))}
         ${fila(ETIQUETAS.cuisine, f.cuisine && esc(traducirLista(T_COCINA, f.cuisine)))}
         ${fila(ETIQUETAS.street, f.street && esc(f.street))}
         ${fila(ETIQUETAS.housenumber, f.housenumber && esc(f.housenumber))}
         ${fila(ETIQUETAS.city, f.city && esc(f.city))}
         ${fila(ETIQUETAS.gluten, f.gluten && esc(traducir(T_GLUTEN, f.gluten)))}
         ${fila(ETIQUETAS.website, web && `<a href="${esc(web)}" target="_blank" rel="noopener noreferrer">${esc(web.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, ""))}</a>`)}
+        ${fila(ETIQUETAS.distancia, f.distancia && esc(String(f.distancia).replace(/(\d)\.(\d)/g, "$1,$2")))}
         ${fila(ETIQUETAS.note, f.note && esc(f.note))}
         ${fila(ETIQUETAS.lat, f.lat !== "" && esc(String(f.lat)))}
         ${fila(ETIQUETAS.lon, f.lon !== "" && esc(String(f.lon)))}

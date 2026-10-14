@@ -30,7 +30,7 @@
 
         // 3. NUEVA FUNCIÓN: Leer los datos descargados de lugares.json
         function cargarDatosLocales() {
-            fetch('./lugares.json') // Llama a tu archivo local subido a GitHub
+            fetch('./lugares_brujas.json') // Llama a tu archivo local subido a GitHub
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("No se pudo cargar el archivo lugares.json");

@@ -17,41 +17,35 @@
 
     <main class="max-w-5xl mx-auto p-4 sm:p-8">
         
-        <!-- Panel de Búsqueda y Selección -->
-        <div class="bg-white rounded-2xl shadow-md p-6 mb-8 border border-gray-200">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                🚀 Panel de Búsqueda
-            </h2>
+        <!-- Panel de Control Principal -->
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-8 border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- Selector de Ciudad -->
-                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                    <label class="block text-sm font-bold text-emerald-700 uppercase tracking-wider mb-2">
-                        1. Elige una Ciudad
-                    </label>
-                    <select id="selectorCiudad" onchange="cambiarCiudad()" class="w-full p-3 bg-white border border-gray-300 rounded-lg font-medium shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none cursor-pointer transition-all">
-                        <option value="" disabled selected>Selecciona destino...</option>
-                        <option value="bruselas">Bruselas</option>
-                        <option value="gante">Gante</option>
-                        <option value="brujas">Brujas</option>
-                    </select>
-                </div>
-
-                <!-- Buscador en Tiempo Real -->
-                <div id="panelBusqueda" class="bg-gray-50 p-4 rounded-xl border border-gray-200 opacity-40 pointer-events-none transition-all duration-300">
-                    <label class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">
-                        2. Filtrar por Nombre o Tipo
-                    </label>
-                    <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Hamburguesa, Nombre..." class="w-full p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder-gray-400">
-                </div>
-
+            <!-- Selector de Ciudad -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <label class="block text-sm font-bold text-emerald-700 uppercase tracking-wider mb-2">
+                    📍 Elige una Ciudad:
+                </label>
+                <select id="selectorCiudad" onchange="cambiarCiudad()" class="w-full p-3 bg-white border border-gray-300 rounded-lg font-medium shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none cursor-pointer transition-all">
+                    <option value="" disabled selected>Selecciona tu destino...</option>
+                    <option value="bruselas">Bruselas</option>
+                    <option value="gante">Gante</option>
+                    <option value="brujas">Brujas</option>
+                </select>
             </div>
+
+            <!-- Buscador en Tiempo Real -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <label class="block text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">
+                    🔍 Filtrar en tiempo real:
+                </label>
+                <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Panadería, Nombre..." class="w-full p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder-gray-400">
+            </div>
+
         </div>
 
         <!-- BARRA DE ESTADO / MENSAJES INFORMATIVOS -->
         <div id="mensajeEstado" class="text-center py-4 px-6 text-gray-600 bg-amber-50 border border-amber-200 rounded-xl mb-8 font-medium shadow-sm transition-all">
-            👋 ¡Bienvenido! Selecciona una ciudad para cargar los lugares automáticamente desde tu GitHub.
+            💡 Selecciona una ciudad arriba para mostrar los restaurantes automáticamente.
         </div>
 
         <!-- CONTENEDOR DE TARJETAS (Resultados) -->
@@ -69,33 +63,31 @@
         // ⚙️ CONFIGURACIÓN DE TU REPOSITORIO DE GITHUB
         // Reemplaza estos valores con tus datos reales de GitHub para conectar los archivos
         // =========================================================================
-        const GITHUB_USER = "carbelto"; 
-        const GITHUB_REPO = "gluten-free";
+        const GITHUB_USER = "TU_USUARIO_DE_GITHUB"; 
+        const GITHUB_REPO = "NOMBRE_DE_TU_REPOSITORIO";
         const GITHUB_BRANCH = "main"; // Cambia a "master" si tu rama principal se llama así
         // =========================================================================
 
         let lugaresActuales = [];
 
-        // Esta función descarga el JSON desde GitHub de forma automática al cambiar la ciudad
+        // Descarga el JSON desde tu GitHub de forma automática e invisible al seleccionar la ciudad
         async function cambiarCiudad() {
             const ciudad = document.getElementById('selectorCiudad').value;
-            const panelBusqueda = document.getElementById('panelBusqueda');
             const mensajeEstado = document.getElementById('mensajeEstado');
             const tituloResultados = document.getElementById('tituloResultados');
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            // Limpiar la pantalla de búsquedas anteriores
+            // Limpiar la pantalla
             buscador.value = '';
             contenedor.innerHTML = '';
             tituloResultados.classList.add('hidden');
-            panelBusqueda.classList.add('opacity-40', 'pointer-events-none');
 
-            // Mensaje de carga animado
+            // Mensaje de carga transitorio
             mensajeEstado.className = "text-center py-4 px-6 text-blue-800 bg-blue-50 border border-blue-200 rounded-xl mb-8 font-semibold animate-pulse";
-            mensajeEstado.innerHTML = `⏳ Cargando datos de <b>${ciudad.toUpperCase()}</b> automáticamente...`;
+            mensajeEstado.innerHTML = `⏳ Conectando con tu repositorio y cargando locales de <b>${ciudad.toUpperCase()}</b>...`;
 
-            // URL directa al archivo en tu repositorio de GitHub
+            // URL directa al archivo sin intervención del usuario
             const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
 
             try {
@@ -105,15 +97,15 @@
                     throw new Error(`No se pudo acceder al archivo lugares_${ciudad}.json`);
                 }
 
-                // El navegador lee el archivo FeatureCollection de OpenStreetMap
+                // El navegador procesa el FeatureCollection original de OpenStreetMap
                 const datosGeoJson = await respuesta.json();
                 
-                // Transforma el mapa original en un formato limpio para las tarjetas en tiempo real
+                // Transforma el mapa en un formato limpio para las tarjetas de la interfaz
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
                     const coords = feature.geometry.coordinates; // [longitud, latitud]
 
-                    // Unificar los textos de la dirección
+                    // Unificar textos de la dirección postal
                     let direccionFinal = prop["addr:street"] || "";
                     if (prop["addr:housenumber"]) direccionFinal += ` ${prop["addr:housenumber"]}`;
                     if (prop["addr:city"]) {
@@ -122,7 +114,7 @@
                         direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
                     }
 
-                    // Traducir las categorías del mapa original
+                    // Identificar categorías del mapa original
                     let categoria = "Restaurante";
                     if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería";
                     else if (prop.amenity === "cafe") categoria = "Cafetería";
@@ -130,7 +122,7 @@
                     else if (prop.cuisine === "pizza") categoria = "Pizzería";
                     else if (prop.cuisine === "burger") categoria = "Hamburguesería";
 
-                    // Generar notas dinámicas leyendo si tiene opciones veganas o sin lactosa
+                    // Generar notas dinámicas de alérgenos y dietas
                     let notasArray = [];
                     if (prop["diet:lactose_free"] === "yes") notasArray.push("Sin lactosa");
                     if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") notasArray.push("Vegano");
@@ -142,28 +134,45 @@
                         : "Opciones sin gluten verificadas.";
 
                     return {
-                        nombre: prop.name || "Establecimiento",
+                        nombre: prop.name || "Establecimiento sin nombre",
                         categoria: categoria,
                         direccion: direccionFinal,
                         nota: notaFinal,
-                        lat: coords[1], // Latitud
+                        lat: coords[1], // Latitud (corregido el orden del GeoJSON)
                         lon: coords[0]  // Longitud
                     };
                 });
 
-                // Activar el buscador y mostrar resultados
-                panelBusqueda.classList.remove('opacity-40', 'pointer-events-none');
+                // Mostrar el título de resultados y actualizar banner de estado
                 tituloResultados.classList.remove('hidden');
-
                 mensajeEstado.className = "text-center py-4 px-6 text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl mb-8 font-semibold shadow-sm";
-                mensajeEstado.innerHTML = `🎉 Se han cargado <b>${lugaresActuales.length} locales</b> en <b>${ciudad.toUpperCase()}</b> de forma automática.`;
+                mensajeEstado.innerHTML = `🎉 ¡Listo! Se han cargado <b>${lugaresActuales.length} locales</b> de forma automática desde tu GitHub.`;
 
+                // Renderizar las tarjetas
                 mostrarLugares(lugaresActuales);
 
             } catch (error) {
                 mensajeEstado.className = "text-center py-4 px-6 text-red-800 bg-red-50 border border-red-200 rounded-xl mb-8 font-semibold";
-                mensajeEstado.innerHTML = `❌ <b>Error automático:</b> No se pudo leer el archivo de GitHub. Comprueba que las variables <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_USER</code> y <code class="bg-white px-1 py-0.5 rounded text-xs">GITHUB_REPO</code> coincidan exactamente con tu repositorio público.`;
+                mensajeEstado.innerHTML = `❌ <b>Error de sincronización:</b> No se ha podido leer el archivo. Revisa que tu repositorio de GitHub sea <b>Público</b> y que las variables del script contengan tu usuario y repositorio exactos.`;
                 console.error(error);
             }
         }
 
+        // Renderiza las tarjetas de los locales en el HTML
+        function mostrarLugares(lugares) {
+            const contenedor = document.getElementById('listaLugares');
+            contenedor.innerHTML = '';
+
+            if (lugares.length === 0) {
+                contenedor.innerHTML = `<p class="col-span-full text-center text-gray-400 py-12 font-medium">🔍 No hay ningún local que coincida con tu búsqueda.</p>`;
+                return;
+            }
+
+            lugares.forEach(lugar => {
+                // Al usar las coordenadas exactas obtenidas del JSON, Google Maps te lleva al punto exacto
+                const urlMaps = `https://google.com{lugar.lat},${lugar.lon}`;
+
+                const tarjeta = `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group">
+                        <div>
+                            <div class="flex justify-between items-start gap-3">

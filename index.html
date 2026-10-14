@@ -46,60 +46,26 @@
         .btn-maps:hover { background-color: #1d4ed8; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
-</head>
-<body>
-
-    <header>
-        <h1>🇧🇪 Guía Sin Gluten</h1>
-        <p>Tu comida segura en Bruselas, Gante y Brujas</p>
-    </header>
-
-    <main>
-        <div class="panel">
-            <div class="campo">
-                <div>
-                    <label>📍 1. Elige una Ciudad:</label>
-                    <select id="selectorCiudad">
-                        <option value="" disabled selected>Selecciona tu destino...</option>
-                        <option value="bruselas">Bruselas</option>
-                        <option value="gante">Gante</option>
-                        <option value="brujas">Brujas</option>
-                    </select>
-                </div>
-                <button class="btn-buscar" onclick="lanzarConsulta()">🔍 Consultar Lugares</button>
-            </div>
-
-            <div class="campo" style="justify-content: flex-start;">
-                <label class="gris">🔍 2. Filtrar resultados por texto:</label>
-                <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Panadería, Domino's...">
-            </div>
-        </div>
-
-        <div id="mensajeEstado">
-            💡 Selecciona una ciudad en el menú desplegable y pulsa el botón naranja para buscar.
-        </div>
-
-        <div>
-            <h2 id="tituloResultados" class="titulo">📍 Sitios sin Gluten Encontrados</h2>
-            <div id="listaLugares" class="grid-tarjetas"></div>
-        </div>
-    </main>
 
     <script>
+        // Declaración global de variables de configuración de tu repositorio público en GitHub
         const GITHUB_USER = "carbelto"; 
         const GITHUB_REPO = "gluten-free";
         const GITHUB_BRANCH = "main"; 
 
         let lugaresActuales = [];
 
+        // Función principal asíncrona de consulta
         async function lanzarConsulta() {
-            const ciudad = document.getElementById('selectorCiudad').value;
+            const selectCiudad = document.getElementById('selectorCiudad');
+            if (!selectCiudad) return;
+            
+            const ciudad = selectCiudad.value;
             const mensajeEstado = document.getElementById('mensajeEstado');
             const tituloResultados = document.getElementById('tituloResultados');
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            // CORREGIDO: Se unificó la comprobación usando la variable correcta en español 'ciudad'
             if (!ciudad || ciudad === "") {
                 mensajeEstado.className = "error";
                 mensajeEstado.innerHTML = "⚠️ Por favor, selecciona primero una ciudad en el menú desplegable.";
@@ -121,10 +87,17 @@
 
                 const datosGeoJson = await respuesta.json();
                 
-                // Mapeo estable indexando los valores numéricos del array de geometría original de OpenStreetMap
+                // Mapeo seguro y robusto libre de corchetes vacíos o expresiones inválidas de asignación ternaria
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
-                    const coords = (feature.geometry && feature.geometry.coordinates) ? feature.geometry.coordinates :; 
+                    
+                    // Extracción segura del array de geometría nativa de OpenStreetMap
+                    let latitud = 0;
+                    let longitud = 0;
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        longitud = feature.geometry.coordinates[0];
+                        latitud = feature.geometry.coordinates[1];
+                    }
 
                     let calle = prop["addr:street"] || "";
                     let numero = prop["addr:housenumber"] || "";
@@ -153,4 +126,29 @@
                         ? `Opciones: ${opcionesAdicionales.join(", ")}.` 
                         : "Establecimiento con opciones sin gluten verificadas.";
 
-                    // En GeoJSON estándar, el índice 1 es Latitud y el índice 0 es Longitud
+                    return {
+                        nombre: prop.name || "Establecimiento",
+                        categoria: categoria,
+                        direccion: direccionFinal,
+                        nota: notaFinal,
+                        lat: latitud, 
+                        lon: longitud  
+                    };
+                });
+
+                tituloResultados.style.display = 'block';
+                mensajeEstado.className = "exito";
+                mensajeEstado.innerHTML = `🎉 ¡Éxito! Se han cargado <b>${lugaresActuales.length} locales</b> automáticamente desde GitHub.`;
+
+                mostrarLugares(lugaresActuales);
+
+            } catch (error) {
+                mensajeEstado.className = "error";
+                mensajeEstado.innerHTML = `❌ Error: No se pudo leer el archivo de GitHub. Comprueba que el archivo en tu repositorio se llame exactamente <code style="background:#fff;padding:2px 4px;border-radius:4px;">lugares_${ciudad}.json</code>.`;
+                console.error(error);
+            }
+        }
+
+        function mostrarLugares(lugares) {
+
+        

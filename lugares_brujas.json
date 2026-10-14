@@ -1,98 +1,225 @@
-{
-  "type": "FeatureCollection",
-  "generator": "overpass-turbo-adapted",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Nomad",
-        "amenity": "restaurant",
-        "cuisine": "international",
-        "addr:street": "'t Zand",
-        "addr:housenumber": "12",
-        "addr:city": "Brugge",
-        "diet:gluten_free": "yes",
-        "website": "https://nomadbrugge.be",
-        "distancia_centro": "600 m",
-        "note": "Restaurante con terraza idílica para comer o cenar. Comentario usuario: 'Tienen muchísimas opciones sin gluten claramente marcadas en la carta. El personal sabe perfectamente cómo evitar la contaminación cruzada.'"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [3.2181, 51.2057]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "De Stoepa",
-        "amenity": "restaurant",
-        "cuisine": "local",
-        "addr:street": "Oostmeers",
-        "addr:housenumber": "124",
-        "addr:city": "Brugge",
-        "diet:gluten_free": "yes",
-        "distancia_centro": "950 m",
-        "note": "Restaurante de comida tradicional local con jardín. Comentario usuario: 'Un rincón muy acogedor apartado del bullicio. El personal adaptó los platos típicos belgas para que fueran seguros sin gluten. ¡Gran experiencia!'"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [3.2204, 51.2002]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Bohemian Burgers",
-        "amenity": "fast_food",
-        "cuisine": "burger",
-        "addr:street": "Sint-Amandsstraat",
-        "addr:housenumber": "24",
-        "addr:city": "Brugge",
-        "diet:gluten_free": "yes",
-        "website": "https://bohemianburgers.be",
-        "distancia_centro": "140 m",
-        "note": "Comida rápida gourmet en pleno centro histórico. Comentario usuario: 'Hamburguesas espectaculares. El pan sin gluten es muy tierno y el camarero nos confirmó que las patatas se fríen en una freidora independiente.'"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [3.2224, 51.2085]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Frituur Royal",
-        "amenity": "fast_food",
-        "cuisine": "friture",
-        "addr:street": "Langestraat",
-        "addr:housenumber": "181A",
-        "addr:city": "Brugge",
-        "diet:gluten_free": "yes",
-        "distancia_centro": "1.1 km",
-        "note": "Puesto tradicional de patatas fritas belgas. Comentario usuario: '¡Un milagro para celíacos! Tienen freidoras separadas exclusivas para patatas sin gluten y las salsas están bien especificadas. Rápido y barato.'"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [3.2392, 51.2125]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Otto Waffle Boutique",
-        "amenity": "cafe",
-        "shop": "pastry",
-        "addr:street": "Katelijnestraat",
-        "addr:housenumber": "1",
-        "addr:city": "Brugge",
-        "diet:gluten_free": "yes",
-        "distancia_centro": "550 m",
-        "note": "Cafetería especializada en gofres artesanales. Comentario usuario: '¡Gofres con forma de flor deliciosos! Su masa está hecha a base de avena y es naturalmente sin gluten. Un sitio imprescindible en Brujas.'"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [3.2263, 51.2034]
-      }
-    }
-  ]
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🇧🇪 Guía Sin Gluten - Bélgica</title>
+    <style>
+        /* CSS Nativo optimizado para un rendimiento ultrarrápido en redes móviles (4G/5G) */
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --bg: #f3f4f6;
+            --text: #1f2937;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header { 
+            background: linear-gradient(135deg, var(--primary), #0d9488); 
+            color: white; 
+            text-align: center; 
+            padding: 2rem 1rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
+        }
+        header h1 { margin: 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.025em; }
+        header p { margin: 0.5rem 0 0 0; color: #ccfbf1; font-size: 1rem; opacity: 0.9; }
+
+        main { max-width: 1024px; margin: 0 auto; padding: 1rem; box-sizing: border-box; }
+        
+        /* Panel de Control de una sola columna en móvil y flotante en PC */
+        .panel { 
+            background: white; 
+            border-radius: 1.25rem; 
+            padding: 1.25rem; 
+            margin-top: -1rem;
+            margin-bottom: 1.5rem; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); 
+            border: 1px solid #e5e7eb; 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 1rem; 
+        }
+        @media (min-width: 768px) { .panel { grid-template-columns: 1fr 1fr; margin-top: 0; } }
+        
+        .campo { 
+            background-color: #f9fafb; 
+            padding: 1rem; 
+            border-radius: 0.875rem; 
+            border: 1px solid #e5e7eb; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            box-sizing: border-box; 
+        }
+        .campo label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; tracking: 0.05em; margin-bottom: 0.5rem; }
+        .campo label.gris { color: #4b5563; }
+        
+        select, input[type="text"] { 
+            width: 100%; 
+            padding: 0.85rem; 
+            background: white; 
+            border: 1px solid #d1d5db; 
+            border-radius: 0.625rem; 
+            font-size: 1rem; 
+            box-sizing: border-box; 
+            -webkit-appearance: none; /* Quita estilos por defecto de iOS */
+        }
+        select:focus, input[type="text"]:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+        
+        .btn-buscar { 
+            width: 100%; 
+            background-color: var(--accent); 
+            color: white; 
+            font-weight: 700; 
+            padding: 0.85rem; 
+            border: none; 
+            border-radius: 0.625rem; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            margin-top: 0.75rem; 
+            transition: background-color 0.15s; 
+            box-shadow: 0 2px 4px rgba(249, 115, 22, 0.2);
+        }
+        .btn-buscar:hover { background-color: var(--accent-dark); }
+        
+        #mensajeEstado { text-align: center; padding: 1rem; border-radius: 0.875rem; margin-bottom: 1.5rem; font-weight: 600; font-size: 0.9rem; border: 1px solid #fef3c7; background-color: #fffbeb; color: #b45309; box-sizing: border-box;}
+        #mensajeEstado.exito { background-color: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+        #mensajeEstado.carga { background-color: #eff6ff; border-color: #bfdbfe; color: #1e40af; animation: pulse 2s infinite; }
+        #mensajeEstado.error { background-color: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+        
+        h2.titulo { font-size: 1.35rem; font-weight: 800; margin: 1.5rem 0 1rem 0; color: #111827; display: none; }
+        
+        /* Grid elástica y fluida para tarjetas en móviles y tablets */
+        .grid-tarjetas { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+        @media (min-width: 640px) { .grid-tarjetas { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .grid-tarjetas { grid-template-columns: repeat(3, 1fr); } }
+        
+        /* Tarjetas estilo App móvil */
+        .tarjeta { 
+            background: white; 
+            padding: 1.25rem; 
+            border-radius: 1.25rem; 
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            box-sizing: border-box; 
+        }
+        .tarjeta-header { display: flex; justify-content: space-between; align-items: start; gap: 0.5rem; }
+        .tarjeta h3 { margin: 0; font-size: 1.2rem; font-weight: 700; color: #111827; line-height: 1.25; }
+        
+        .badge { 
+            background-color: #ecfdf5; 
+            color: #065f46; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            padding: 0.25rem 0.5rem; 
+            border-radius: 0.5rem; 
+            text-transform: uppercase; 
+            white-space: nowrap; 
+            border: 1px solid #a7f3d0; 
+        }
+        
+        .direccion { color: #4b5563; font-size: 0.85rem; margin: 0.75rem 0 0.25rem 0; display: flex; align-items: start; gap: 0.35rem; line-height: 1.4; }
+        .distancia-txt { color: #6b7280; font-size: 0.8rem; font-weight: 600; margin: 0 0 0.75rem 1.15rem; display: block; }
+        
+        /* Cajas de notas optimizadas estéticamente */
+        .box-nota { margin-top: 0.75rem; padding: 0.75rem; border-radius: 0.625rem; font-size: 0.8rem; line-height: 1.4; border-left: 4px solid; }
+        .nota-local { background-color: #f0fdf4; border-left-color: #10b981; color: #14532d; font-weight: 600; }
+        .nota-usuario { background-color: #fffbeb; border-left-color: #f59e0b; color: #78350f; font-style: italic; }
+        
+        /* Botón de Google Maps diseñado para pulsaciones cómodas en pantallas táctiles */
+        .btn-maps { 
+            display: inline-flex; 
+            width: 100%; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 0.5rem; 
+            background-color: #2563eb; 
+            color: white; 
+            font-weight: 700; 
+            font-size: 0.9rem; 
+            padding: 0.85rem 1rem; 
+            border-radius: 0.875rem; 
+            text-decoration: none; 
+            margin-top: 1.25rem; 
+            box-sizing: border-box; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
+            transition: background-color 0.15s;
+        }
+        .btn-maps:hover { background-color: #1d4ed8; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+
+    <script>
+        const GITHUB_USER = "carbelto"; 
+        const GITHUB_REPO = "gluten-free";
+        const GITHUB_BRANCH = "main"; 
+
+        let lugaresActuales = [];
+
+        async function lanzarConsulta() {
+            const selectCiudad = document.getElementById('selectorCiudad');
+            if (!selectCiudad) return;
+            
+            const ciudad = selectCiudad.value;
+            const mensajeEstado = document.getElementById('mensajeEstado');
+            const tituloResultados = document.getElementById('tituloResultados');
+            const buscador = document.getElementById('buscador');
+            const contenedor = document.getElementById('listaLugares');
+
+            if (!ciudad || ciudad === "") {
+                mensajeEstado.className = "error";
+                mensajeEstado.innerHTML = "⚠️ Por favor, selecciona primero una ciudad en el menú desplegable.";
+                return;
+            }
+
+            buscador.value = '';
+            contenedor.innerHTML = '';
+            tituloResultados.style.display = 'none';
+
+            mensajeEstado.className = "carga";
+            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${ciudad.toUpperCase()}</b>...`;
+
+            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
+
+            try {
+                const respuesta = await fetch(urlJson);
+                if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+
+                const datosGeoJson = await respuesta.json();
+                
+                // Mapeo seguro y adaptado para capturar los campos específicos nota_local y nota_usuario
+                lugaresActuales = datosGeoJson.features.map(feature => {
+                    const prop = feature.properties;
+                    
+                    let latitud = 0;
+                    let longitud = 0;
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        longitud = feature.geometry.coordinates[0];
+                        latitud = feature.geometry.coordinates[1];
+                    }
+
+                    let calle = prop["addr:street"] || "";
+                    let numero = prop["addr:housenumber"] || "";
+                    let direccionFinal = calle;
+                    if (numero) direccionFinal += ` ${numero}`;
+                    if (prop["addr:city"]) {
+                        direccionFinal += `, ${prop["addr:city"]}`;
+                    } else {
+                        direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
+                    }
+
+                    let categoria = "Restaurante";

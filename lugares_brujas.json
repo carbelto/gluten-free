@@ -13,6 +13,7 @@
         "addr:city": "Brugge",
         "diet:gluten_free": "yes",
         "website": "https://nomadbrugge.be",
+        "distancia_centro": "600 m",
         "note": "Restaurante con terraza idílica para comer o cenar. Comentario usuario: 'Tienen muchísimas opciones sin gluten claramente marcadas en la carta. El personal sabe perfectamente cómo evitar la contaminación cruzada.'"
       },
       "geometry": {
@@ -30,6 +31,7 @@
         "addr:housenumber": "124",
         "addr:city": "Brugge",
         "diet:gluten_free": "yes",
+        "distancia_centro": "950 m",
         "note": "Restaurante de comida tradicional local con jardín. Comentario usuario: 'Un rincón muy acogedor apartado del bullicio. El personal adaptó los platos típicos belgas para que fueran seguros sin gluten. ¡Gran experiencia!'"
       },
       "geometry": {
@@ -48,6 +50,7 @@
         "addr:city": "Brugge",
         "diet:gluten_free": "yes",
         "website": "https://bohemianburgers.be",
+        "distancia_centro": "140 m",
         "note": "Comida rápida gourmet en pleno centro histórico. Comentario usuario: 'Hamburguesas espectaculares. El pan sin gluten es muy tierno y el camarero nos confirmó que las patatas se fríen en una freidora independiente.'"
       },
       "geometry": {
@@ -65,6 +68,7 @@
         "addr:housenumber": "181A",
         "addr:city": "Brugge",
         "diet:gluten_free": "yes",
+        "distancia_centro": "1.1 km",
         "note": "Puesto tradicional de patatas fritas belgas. Comentario usuario: '¡Un milagro para celíacos! Tienen freidoras separadas exclusivas para patatas sin gluten y las salsas están bien especificadas. Rápido y barato.'"
       },
       "geometry": {
@@ -78,10 +82,11 @@
         "name": "Otto Waffle Boutique",
         "amenity": "cafe",
         "shop": "pastry",
-        "addr:street": "Kat稳定性elijnestraat",
+        "addr:street": "Katelijnestraat",
         "addr:housenumber": "1",
         "addr:city": "Brugge",
         "diet:gluten_free": "yes",
+        "distancia_centro": "550 m",
         "note": "Cafetería especializada en gofres artesanales. Comentario usuario: '¡Gofres con forma de flor deliciosos! Su masa está hecha a base de avena y es naturalmente sin gluten. Un sitio imprescindible en Brujas.'"
       },
       "geometry": {

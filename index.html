@@ -225,7 +225,8 @@ function categoria(t) {
 /* ---------- Traducción al castellano ---------- */
 const ETIQUETAS = {
   amenity: "Tipo de local", cuisine: "Tipo de cocina", street: "Calle", housenumber: "Número",
-  city: "Ciudad", gluten: "Opciones sin gluten", website: "Sitio web", note: "Nota"
+  city: "Ciudad", gluten: "Opciones sin gluten", website: "Sitio web", note: "Nota",
+  lat: "Latitud", lon: "Longitud"
 };
 
 const T_AMENITY = {
@@ -308,7 +309,9 @@ function buildPlace(t, lat, lon, osmId) {
       street, housenumber, city,
       gluten: t["diet:gluten_free"] || "",
       website: t.website || t["contact:website"] || "",
-      note: t.note || ""
+      note: t.note || "",
+      lat: hasCoords ? Number(lat) : "",
+      lon: hasCoords ? Number(lon) : ""
     },
     lat: hasCoords ? Number(lat) : null,
     lon: hasCoords ? Number(lon) : null
@@ -565,6 +568,8 @@ function render() {
         ${fila(ETIQUETAS.gluten, f.gluten && esc(traducir(T_GLUTEN, f.gluten)))}
         ${fila(ETIQUETAS.website, web && `<a href="${esc(web)}" target="_blank" rel="noopener noreferrer">${esc(web.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, ""))}</a>`)}
         ${fila(ETIQUETAS.note, f.note && esc(f.note))}
+        ${fila(ETIQUETAS.lat, f.lat !== "" && esc(String(f.lat)))}
+        ${fila(ETIQUETAS.lon, f.lon !== "" && esc(String(f.lon)))}
         ${p.hours ? fila("Horario", esc(p.hours)) : ""}
         ${p.phone ? fila("Teléfono", esc(p.phone)) : ""}
         ${p.extras.length ? fila("Otras opciones", esc(p.extras.join(", "))) : ""}

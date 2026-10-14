@@ -1,0 +1,93 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo-adapted",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chambelland Gent",
+        "amenity": "bakery",
+        "shop": "bakery",
+        "addr:street": "François Laurentplein",
+        "addr:housenumber": "4",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "note": "Obrador artesanal y cafetería 100% libre de gluten. Comentario usuario: 'Panes, focaccias y tartas espectaculares. Al ser un espacio completamente sin gluten, comes con total tranquilidad de que no hay contaminación.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7279, 51.0512]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Le Botaniste",
+        "amenity": "restaurant",
+        "addr:street": "Hoornstraat",
+        "addr:housenumber": "13",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "website": "https://lebotaniste.eu",
+        "note": "Restaurante orgánico y vegano en un local precioso que imita una antigua botica. Comentario usuario: 'Prácticamente toda la carta es sin gluten o adaptable. Los boles templados y las pastas vegetales son deliciosos y muy saludables.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7211, 51.0521]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Epiphany's Kitchen",
+        "amenity": "restaurant",
+        "addr:street": "Burgstraat",
+        "addr:housenumber": "10",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "website": "https://epiphanyskitchen.com",
+        "note": "Restaurante italiano y de fusión galardonado por su cocina inclusiva. Comentario usuario: 'La masa de pizza sin gluten que hacen de forma artesanal es la mejor que he probado en mi vida. El menú entero está muy cuidado.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7194, 51.0567]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Catberry",
+        "amenity": "cafe",
+        "shop": "pastry",
+        "addr:street": "Sint-Margrietstraat",
+        "addr:housenumber": "34",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "diet:vegan": "only",
+        "note": "Cafetería y pastelería artesanal acogedora. Comentario usuario: 'Los pasteles y los rollos de canela sin gluten son una auténtica locura de buenos. Hay que ir temprano porque vuelan.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7225, 51.0588]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eetoile",
+        "amenity": "fast_food",
+        "cuisine": "wrap;salad;soup",
+        "addr:street": "Oudenaardsesteenweg",
+        "addr:housenumber": "34",
+        "addr:city": "Gent",
+        "diet:gluten_free": "yes",
+        "note": "Establecimiento de comida rápida saludable. Comentario usuario: 'Boles de ensalada y cremas del día perfectos para comer algo rápido, fresco y sin gluten mientras pateas la ciudad.'"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [3.7093, 51.0247]
+      }
+    }
+  ]
+}

@@ -64,8 +64,8 @@
   .badge { background: var(--accent-soft); color: var(--accent-dark); font-size: .7rem; font-weight: 700;
     padding: 3px 9px; border-radius: 6px; text-transform: uppercase; white-space: nowrap; border: 1px solid transparent; }
   .badge.only { background: var(--accent); color: #fff; }
-  .nota-local-box { background: var(--bg); border-left: 3px solid var(--accent); padding: 6px 10px; margin-top: 8px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
-  .nota-usuario-box { background: var(--warn-bg); color: var(--warn-text); border-left: 3px solid var(--star); padding: 6px 10px; margin-top: 6px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
+  .nota-local-box { background: var(--accent-soft); color: var(--accent-dark); border-left: 3px solid var(--accent); padding: 8px 12px; margin-top: 10px; font-size: 0.85rem; border-radius: 0 6px 6px 0; font-weight: 500; }
+  .nota-usuario-box { background: var(--warn-bg); color: var(--warn-text); border-left: 3px solid var(--star); padding: 8px 12px; margin-top: 8px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
   .actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .actions a { color: var(--accent-dark); font-size: .8rem; font-weight: 600; text-decoration: none; }
   .actions a:hover { text-decoration: underline; }
@@ -165,7 +165,7 @@ function buildPlace(t, lat, lon, osmId) {
       street, housenumber, city,
       website: t.website || "",
       distancia: t.distancia_centro || "",
-      nota_local: t.nota_local || "",
+      nota_local: t.nota_local || t.note || "",
       nota_usuario: t.nota_usuario || "",
       lat: hasCoords ? Number(lat) : "",
       lon: hasCoords ? Number(lon) : ""
@@ -254,4 +254,46 @@ function render() {
     cards.appendChild(card);
 
     if (map && markerLayer && p.lat != null) {
-      const m = L.marker([p.lat, p.lon]).bindPopup
+      const m = L.marker([p.lat, p.lon]).bindPopup(`<strong>${esc(p.name)}</strong><br>${esc(p.f.distancia)}`);
+      m.addTo(markerLayer);
+      markers[p.id] = m;
+    }
+  });
+
+  if (map && list.length) {
+    const coords = list.filter(p => p.lat != null).map(p => [p.lat, p.lon]);
+    if (coords.length) map.fitBounds(coords, { padding: [20, 20] });
+  }
+
+  setStatus(list.length ? `🎉 ${list.length} sitios cargados en ${esc(areaName)}` : "No hay resultados.", "ok");
+}
+
+async function buscar(key) {
+  const city = CITIES[key];
+  if (!city) return;
+  
+  document.querySelectorAll(".chips button").forEach((b) => b.classList.toggle("active", b.dataset.city === key));
+  setStatus(`⏳ Cargando ${city.label}…`, "loading");
+  
+  try {
+    const res = await fetch(`${PRELOADED_PREFIX}${key}.json`);
+    if (!res.ok) throw new Error("No se pudo cargar el archivo local");
+    const data = await res.json();
+    places = normalizarPrecargado(data);
+    areaName = city.label;
+    render();
+  } catch (e) {
+    setStatus("❌ Error al cargar los datos: " + esc(e.message), "error");
+  }
+}
+
+document.querySelectorAll(".chips button").forEach((b) =>
+  b.addEventListener("click", () => buscar(b.dataset.city)));
+$("onlyFilter").addEventListener("change", render);
+$("sortSelect").addEventListener("change", render);
+$("textFilter").addEventListener("input", render);
+
+buscar("bruselas");
+</script>
+</body>
+</html>

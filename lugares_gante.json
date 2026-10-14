@@ -12,6 +12,7 @@
         "addr:housenumber": "4",
         "addr:city": "Gent",
         "diet:gluten_free": "yes",
+        "distancia_centro": "450 m",
         "note": "Obrador artesanal y cafetería 100% libre de gluten. Comentario usuario: 'Panes, focaccias y tartas espectaculares. Al ser un espacio completamente sin gluten, comes con total tranquilidad de que no hay contaminación.'"
       },
       "geometry": {
@@ -30,6 +31,7 @@
         "diet:gluten_free": "yes",
         "diet:vegan": "only",
         "website": "https://lebotaniste.eu",
+        "distancia_centro": "250 m",
         "note": "Restaurante orgánico y vegano en un local precioso que imita una antigua botica. Comentario usuario: 'Prácticamente toda la carta es sin gluten o adaptable. Los boles templados y las pastas vegetales son deliciosos y muy saludables.'"
       },
       "geometry": {
@@ -47,6 +49,7 @@
         "addr:city": "Gent",
         "diet:gluten_free": "yes",
         "website": "https://epiphanyskitchen.com",
+        "distancia_centro": "400 m",
         "note": "Restaurante italiano y de fusión galardonado por su cocina inclusiva. Comentario usuario: 'La masa de pizza sin gluten que hacen de forma artesanal es la mejor que he probado en mi vida. El menú entero está muy cuidado.'"
       },
       "geometry": {
@@ -65,6 +68,7 @@
         "addr:city": "Gent",
         "diet:gluten_free": "yes",
         "diet:vegan": "only",
+        "distancia_centro": "650 m",
         "note": "Cafetería y pastelería artesanal acogedora. Comentario usuario: 'Los pasteles y los rollos de canela sin gluten son una auténtica locura de buenos. Hay que ir temprano porque vuelan.'"
       },
       "geometry": {
@@ -82,6 +86,7 @@
         "addr:housenumber": "34",
         "addr:city": "Gent",
         "diet:gluten_free": "yes",
+        "distancia_centro": "3.2 km",
         "note": "Establecimiento de comida rápida saludable. Comentario usuario: 'Boles de ensalada y cremas del día perfectos para comer algo rápido, fresco y sin gluten mientras pateas la ciudad.'"
       },
       "geometry": {

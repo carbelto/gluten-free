@@ -37,21 +37,16 @@
     border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
   .filters label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-  /* Prioridad a la información: la lista ocupa el espacio principal y el mapa pasa a ser secundario / colapsable */
   main { display: grid; grid-template-columns: 1fr 320px; height: calc(100vh - 165px); min-height: 450px; }
   #list { overflow-y: auto; padding: 16px; background: var(--bg); }
   #map-container { display: flex; flex-direction: column; background: var(--card); border-left: 1px solid var(--border); }
   #map { width: 100%; height: 100%; min-height: 250px; background: #e5e7eb; }
 
   #status { padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; font-size: .9rem;
-    background: var(--warn-bg); color: var(--warn-text); }
-  #status.ok { background: var(--accent-soft); color: var(--accent-dark); }
-  #status.error { background: var(--error-bg); color: var(--error-text); }
-  #status.loading { background: #eff6ff; color: #1e40af; }
+    background: var(--accent-soft); color: var(--accent-dark); }
 
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: border-color .15s; }
-  .card:hover { border-color: var(--accent); }
+    padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
   .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
   .card h2 { font-size: 1.1rem; margin: 0; }
   
@@ -59,7 +54,6 @@
   .campos dt { color: var(--muted); font-weight: 600; }
   .campos dd { margin: 0; overflow-wrap: anywhere; }
   .campos .vacio { color: var(--muted); font-style: italic; opacity: .7; }
-  .campos a { color: var(--accent-dark); }
 
   .badge { background: var(--accent-soft); color: var(--accent-dark); font-size: .7rem; font-weight: 700;
     padding: 3px 8px; border-radius: 6px; text-transform: uppercase; white-space: nowrap; }
@@ -69,10 +63,8 @@
   .nota-usuario-box { background: var(--warn-bg); color: var(--warn-text); border-left: 3px solid var(--star); padding: 8px 12px; margin-top: 8px; font-size: 0.85rem; border-radius: 0 6px 6px 0; }
 
   .actions { margin-top: 12px; display: flex; gap: 12px; align-items: center; }
-  .actions a { display: inline-flex; align-items: center; gap: 6px; background: #ea580c; color: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 8px; transition: background .15s; }
-  .actions a:hover { background: #c2410c; }
+  .actions a { display: inline-flex; align-items: center; gap: 6px; background: #ea580c; color: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 8px; }
   .actions a.web-link { background: var(--accent-soft); color: var(--accent-dark); }
-  .actions a.web-link:hover { filter: brightness(.95); }
   
   footer { font-size: .75rem; color: var(--muted); padding: 10px 16px; text-align: center; background: var(--card); border-top: 1px solid var(--border); }
   footer a { color: var(--accent-dark); }
@@ -80,7 +72,7 @@
   @media (max-width: 850px) {
     main { grid-template-columns: 1fr; height: auto; display: flex; flex-direction: column; }
     #map-container { height: 260px; order: 2; border-left: none; border-top: 1px solid var(--border); }
-    #list { order: 1; max-height: none; }
+    #list { order: 1; }
     .filters { flex-direction: column; align-items: stretch; gap: 8px; }
     .filters input[type=text], .filters select { width: 100%; }
   }
@@ -121,35 +113,167 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-const CITIES = {
-  brujas:   { label: "Brujas",   query: "Brugge, Bélgica" },
-  bruselas: { label: "Bruselas", query: "Bruxelles, Bélgica" },
-  gante:    { label: "Gante",    query: "Gent, Bélgica" }
+/* Base de datos interna integrada para evitar bloqueos en móviles */
+const DATA_CIUDADES = {
+  bruselas: [
+    {
+      name: "Chambelland Ixelles",
+      address: "Rue de l'Université 42, Ixelles",
+      distancia: "2.8 km",
+      website: "https://chambelland.com",
+      nota_local: "Panadería 100% libre de gluten.",
+      nota_usuario: "Google: ⭐ 4.6. Opinión: 'Un paraíso absoluto para celíacos. El pan de trigo sarraceno y la bollería son espectaculares.'",
+      lat: 50.8231, lon: 4.3768, only: true
+    },
+    {
+      name: "Veganwaf'",
+      address: "Galerie Agora 48, Brussel",
+      distancia: "150 m",
+      website: "",
+      nota_local: "Cafetería pequeña de gofres para llevar.",
+      nota_usuario: "Google: ⭐ 4.7. Opinión: 'Los mejores gofres sin gluten y veganos que probarás en Bélgica.'",
+      lat: 50.8469, lon: 4.3547, only: true
+    },
+    {
+      name: "The Sister Brussels Café",
+      address: "Rue Chair et Pain 3, Brussel",
+      distancia: "80 m",
+      website: "https://thesistercafe-brussels.com",
+      nota_local: "Cafetería ecológica céntrica.",
+      nota_usuario: "Google: ⭐ 4.3. Opinión: 'Súper cerca de la Grand-Place. Tienen pan de focaccia casero sin gluten delicioso.'",
+      lat: 50.8475, lon: 4.3524, only: true
+    },
+    {
+      name: "Horia - Oriental Natural Eatery",
+      address: "Borgwal 7, Brussel",
+      distancia: "350 m",
+      website: "",
+      nota_local: "Restaurante de cocina orgánica de inspiración libanesa.",
+      nota_usuario: "Google: ⭐ 4.5. Opinión: 'Casi toda la carta es apta de forma natural y el personal explica los alérgenos.'",
+      lat: 50.8476, lon: 4.3483, only: true
+    },
+    {
+      name: "Il Veliero",
+      address: "Rue Général Leman 15, Etterbeek",
+      distancia: "3.1 km",
+      website: "",
+      nota_local: "Restaurante italiano clásico.",
+      nota_usuario: "Google: ⭐ 4.4. Opinión: 'Tienen un menú sin gluten independiente preparado con mucho cuidado.'",
+      lat: 50.8322, lon: 4.3871, only: true
+    },
+    {
+      name: "HUGGYS Burgers Louise",
+      address: "Rue Jourdan 8, Ixelles",
+      distancia: "1.6 km",
+      website: "",
+      nota_local: "Sitio de comida rápida gourmet.",
+      nota_usuario: "Google: ⭐ 4.4. Opinión: 'Disponen de un pan sin gluten exquisito que no se rompe y protocolo estricto.'",
+      lat: 50.8344, lon: 4.3571, only: true
+    }
+  ],
+  brujas: [
+    {
+      name: "Nomad",
+      address: "'t Zand 12, Brugge",
+      distancia: "600 m",
+      website: "https://nomadbrugge.be",
+      nota_local: "Opciones vegetarianas y opciones veganas limitadas.",
+      nota_usuario: "Google: ⭐ 4.5. Opinión: 'La carta especifica claramente qué platos son celíacos o adaptables.'",
+      lat: 51.2057, lon: 3.2181, only: true
+    },
+    {
+      name: "De Stoepa",
+      address: "Oostmeers 124, Brugge",
+      distancia: "950 m",
+      website: "",
+      nota_local: "Dispone de terraza/patio exterior.",
+      nota_usuario: "Google: ⭐ 4.4. Opinión: 'Adaptaron los platos típicos estofados al estilo belga con salsas sin gluten.'",
+      lat: 51.2002, lon: 3.2204, only: true
+    },
+    {
+      name: "Bohemian Burgers",
+      address: "Sint-Amandsstraat 24, Brugge",
+      distancia: "140 m",
+      website: "https://bohemianburgers.be",
+      nota_local: "Opciones vegetarianas y veganas disponibles.",
+      nota_usuario: "Google: ⭐ 4.6. Opinión: 'Hacen las patatas fritas en freidoras totalmente separadas.'",
+      lat: 51.2085, lon: 3.2224, only: true
+    },
+    {
+      name: "Frituur Royal",
+      address: "Langestraat 181A, Brugge",
+      distancia: "1.1 km",
+      website: "",
+      nota_local: "Patatas fritas tradicionales belgas.",
+      nota_usuario: "Google: ⭐ 4.3. Opinión: 'Freidora dedicada en exclusiva para patatas fritas sin gluten.'",
+      lat: 51.2125, lon: 3.2392, only: true
+    },
+    {
+      name: "Otto Waffle Boutique",
+      address: "Katelijnestraat 1, Brugge",
+      distancia: "550 m",
+      website: "",
+      nota_local: "Gofres belgas artesanales.",
+      nota_usuario: "Google: ⭐ 4.5. Opinión: 'Gofres belgas con base de avena naturalmente libre de gluten.'",
+      lat: 51.2034, lon: 3.2263, only: true
+    }
+  ],
+  gante: [
+    {
+      name: "Chambelland Gent",
+      address: "François Laurentplein 4, Gent",
+      distancia: "450 m",
+      website: "",
+      nota_local: "Opciones sin lactosa y veganas disponibles.",
+      nota_usuario: "Google: ⭐ 4.7. Opinión: 'Obrador artesanal 100% libre de gluten. Pan y dulces espectaculares.'",
+      lat: 51.0512, lon: 3.7279, only: true
+    },
+    {
+      name: "Le Botaniste",
+      address: "Hoornstraat 13, Gent",
+      distancia: "250 m",
+      website: "https://lebotaniste.eu",
+      nota_local: "Establecimiento 100% vegetariano y vegano.",
+      nota_usuario: "Google: ⭐ 4.6. Opinión: 'Casi toda la carta es apta sin gluten por defecto, boles calientes brutales.'",
+      lat: 51.0521, lon: 3.7211, only: true
+    },
+    {
+      name: "Epiphany's Kitchen",
+      address: "Burgstraat 10, Gent",
+      distancia: "400 m",
+      website: "https://epiphanyskitchen.com",
+      nota_local: "Cocina con opciones sin lactosa y veganas.",
+      nota_usuario: "Google: ⭐ 4.5. Opinión: 'El paraíso de la pizza para celíacos. Masa casera nada acartonada.'",
+      lat: 51.0567, lon: 3.7194, only: true
+    },
+    {
+      name: "Catberry",
+      address: "Sint-Margrietstraat 34, Gent",
+      distancia: "650 m",
+      website: "",
+      nota_local: "Establecimiento 100% vegano y sin gluten.",
+      nota_usuario: "Google: ⭐ 4.8. Opinión: 'Pasteles y bizcochos de vitrina esponjosos y espectaculares.'",
+      lat: 51.0588, lon: 3.7225, only: true
+    },
+    {
+      name: "Eetoile",
+      address: "Oudenaardsesteenweg 34, Gent",
+      distancia: "3.2 km",
+      website: "",
+      nota_local: "Bar de comida saludable. Wraps, ensaladas y sopas.",
+      nota_usuario: "Google: ⭐ 4.4. Opinión: 'Perfecto para comer algo rápido y sano sin riesgos. Alérgenos bien detallados.'",
+      lat: 51.0247, lon: 3.7093, only: true
+    }
+  ]
 };
-const PRELOADED_PREFIX = "lugares_";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-function setStatus(html, kind) {
+function setStatus(html) {
   const el = $("status");
-  if (el) {
-    el.className = kind || "";
-    el.innerHTML = html;
-  }
-}
-
-function centro(g) {
-  if (!g || !g.coordinates) return [null, null];
-  if (g.type === "Point") return [g.coordinates[0], g.coordinates[1]];
-  const pts = [];
-  (function recoger(a) {
-    if (!Array.isArray(a)) return;
-    if (typeof a[0] === "number") pts.push(a); else a.forEach(recoger);
-  })(g.coordinates);
-  if (!pts.length) return [null, null];
-  return [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length];
+  if (el) el.innerHTML = html;
 }
 
 function urlSegura(w) {
@@ -160,47 +284,6 @@ function urlSegura(w) {
 
 const VACIO = '<span class="vacio">No indicado</span>';
 const fila = (etiqueta, html) => `<dt>${etiqueta}</dt><dd>${html || VACIO}</dd>`;
-
-function buildPlace(t, lat, lon, osmId) {
-  if (!t || !t.name) return null;
-  const hasCoords = lat != null && lon != null && isFinite(lat) && isFinite(lon);
-  const street = String(t["addr:street"] || ""), housenumber = String(t["addr:housenumber"] || ""), city = String(t["addr:city"] || "");
-  
-  return {
-    id: osmId || `nombre/${t.name}`,
-    osm: osmId || "",
-    name: String(t.name),
-    kind: t.amenity || t.shop || "Local",
-    only: t["diet:gluten_free"] === "only" || t["diet:gluten_free"] === "yes",
-    address: [street, housenumber, city].filter(Boolean).join(", "),
-    f: {
-      amenity: t.amenity || t.shop || "",
-      street, housenumber, city,
-      website: t.website || "",
-      distancia: t.distancia_centro || "",
-      nota_local: t.nota_local || t.note || "",
-      nota_usuario: t.nota_usuario || "",
-      lat: hasCoords ? Number(lat) : "",
-      lon: hasCoords ? Number(lon) : ""
-    },
-    lat: hasCoords ? Number(lat) : null,
-    lon: hasCoords ? Number(lon) : null
-  };
-}
-
-function normalizarPrecargado(datos) {
-  const lista = Array.isArray(datos) ? datos : datos && (datos.features || datos.elements);
-  if (!Array.isArray(lista)) return [];
-  return lista.map((it) => {
-    if (!it) return null;
-    if (it.geometry) {
-      const [lon, lat] = centro(it.geometry);
-      return buildPlace(it.properties || {}, lat, lon, it.id);
-    }
-    const tags = it.tags || it.properties || it;
-    return buildPlace(tags, it.lat, it.lon, it.id);
-  }).filter(Boolean);
-}
 
 let map = null, markerLayer = null, markers = {};
 try {
@@ -216,7 +299,7 @@ let areaName = "";
 
 function mapsUrl(p) {
   if (p.lat != null && p.lon != null) return `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`;
-  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${p.name} ${p.address || areaName}`);
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${p.name} ${p.address}`);
 }
 
 function visiblePlaces() {
@@ -224,7 +307,7 @@ function visiblePlaces() {
   if ($("onlyFilter").checked) list = list.filter((p) => p.only);
   const q = $("textFilter").value.toLowerCase().trim();
   if (q) {
-    list = list.filter((p) => [p.name, p.kind, p.address, p.f.nota_local, p.f.nota_usuario].some((v) => (v || "").toLowerCase().includes(q)));
+    list = list.filter((p) => [p.name, p.address, p.nota_local, p.nota_usuario].some((v) => (v || "").toLowerCase().includes(q)));
   }
   return list;
 }
@@ -237,10 +320,10 @@ function render() {
   if (markerLayer) markerLayer.clearLayers();
   markers = {};
 
-  list.forEach((p) => {
+  list.forEach((p, idx) => {
     const card = document.createElement("div");
     card.className = "card";
-    const web = urlSegura(p.f.website);
+    const web = urlSegura(p.website);
     
     card.innerHTML = `
       <div class="card-head">
@@ -249,20 +332,20 @@ function render() {
       </div>
       <dl class="campos">
         ${fila("Dirección", esc(p.address))}
-        ${fila("Distancia centro", esc(p.f.distancia))}
+        ${fila("Distancia centro", esc(p.distancia))}
       </dl>
-      ${p.f.nota_local ? `<div class="nota-local-box">💡 <strong>Nota del local:</strong> ${esc(p.f.nota_local)}</div>` : ""}
-      ${p.f.nota_usuario ? `<div class="nota-usuario-box">💬 <strong>Opinión de usuario:</strong> ${esc(p.f.nota_usuario)}</div>` : ""}
+      ${p.nota_local ? `<div class="nota-local-box">💡 <strong>Nota del local:</strong> ${esc(p.nota_local)}</div>` : ""}
+      ${p.nota_usuario ? `<div class="nota-usuario-box">💬 <strong>Opinión:</strong> ${esc(p.nota_usuario)}</div>` : ""}
       <div class="actions">
         <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">📍 Google Maps</a>
-        ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener" class="web-link">🌐 Sitio Web</a>` : ""}
+        ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener" class="web-link">🌐 Web</a>` : ""}
       </div>`;
     
     card.addEventListener("click", (e) => {
       if (e.target.tagName === 'A') return;
       if (map && p.lat != null) {
         map.flyTo([p.lat, p.lon], 16);
-        markers[p.id]?.openPopup();
+        markers[idx]?.openPopup();
       }
     });
     cards.appendChild(card);
@@ -270,7 +353,7 @@ function render() {
     if (map && markerLayer && p.lat != null) {
       const m = L.marker([p.lat, p.lon]).bindPopup(`<strong>${esc(p.name)}</strong>`);
       m.addTo(markerLayer);
-      markers[p.id] = m;
+      markers[idx] = m;
     }
   });
 
@@ -282,26 +365,18 @@ function render() {
     }
   }
 
-  setStatus(list.length ? `🎉 ${list.length} sitios encontrados en ${esc(areaName)}` : "No hay resultados.", "ok");
+  setStatus(`🎉 ${list.length} sitios encontrados en ${esc(areaName)}`);
 }
 
-async function buscar(key) {
-  const city = CITIES[key];
-  if (!city) return;
+function buscar(key) {
+  const cityInfo = { bruselas: "Bruselas", brujas: "Brujas", gante: "Gante" };
+  if (!DATA_CIUDADES[key]) return;
   
   document.querySelectorAll(".chips button").forEach((b) => b.classList.toggle("active", b.dataset.city === key));
-  setStatus(`⏳ Cargando ${city.label}...`, "loading");
   
-  try {
-    const res = await fetch(`${PRELOADED_PREFIX}${key}.json`);
-    if (!res.ok) throw new Error("No se pudo cargar el archivo local");
-    const data = await res.json();
-    places = normalizarPrecargado(data);
-    areaName = city.label;
-    render();
-  } catch (e) {
-    setStatus("❌ Error al cargar los datos: " + esc(e.message), "error");
-  }
+  places = DATA_CIUDADES[key];
+  areaName = cityInfo[key];
+  render();
 }
 
 document.querySelectorAll(".chips button").forEach((b) =>
@@ -310,6 +385,7 @@ $("onlyFilter").addEventListener("change", render);
 $("sortSelect").addEventListener("change", render);
 $("textFilter").addEventListener("input", render);
 
+// Cargar Bruselas por defecto al iniciar
 buscar("bruselas");
 </script>
 </body>

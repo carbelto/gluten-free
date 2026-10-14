@@ -9,19 +9,18 @@
         header { background: linear-gradient(to right, #059669, #0d9488); color: white; text-align: center; padding: 2.5rem 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         header h1 { margin: 0; font-size: 2.25rem; font-weight: 800; }
         header p { margin: 0.5rem 0 0 0; color: #ccfbf1; font-size: 1.125rem; }
-        main { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; }
+        main { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; box-sizing: border-box; }
         
         .panel { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         @media (min-width: 768px) { .panel { grid-template-columns: 1fr 1fr; } }
         
-        .campo { background-color: #f9fafb; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; display: flex; flex-direction: column; justify-content: space-between; }
-        .campo label { display: block; font-size: 0.875rem; font-weight: 700; color: #047857; text-transform: uppercase; tracking-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .campo { background-color: #f9fafb; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
+        .campo label { display: block; font-size: 0.875rem; font-weight: 700; color: #047857; text-transform: uppercase; margin-bottom: 0.5rem; }
         .campo label.gris { color: #4b5563; }
         
         select, input[type="text"] { width: 100%; padding: 0.75rem; background: white; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; }
         select:focus, input[type="text"]:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
         
-        /* Botón para lanzar la consulta */
         .btn-buscar { width: 100%; background-color: #f97316; color: white; font-weight: 700; padding: 0.75rem; border: none; border-radius: 0.5rem; font-size: 1rem; cursor: pointer; margin-top: 0.75rem; transition: background-color 0.15s; }
         .btn-buscar:hover { background-color: #ea580c; }
         
@@ -35,7 +34,7 @@
         @media (min-width: 640px) { .grid-tarjetas { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .grid-tarjetas { grid-template-columns: repeat(3, 1fr); } }
         
-        .tarjeta { background: white; padding: 1.5rem; border-radius: 1rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; }
+        .tarjeta { background: white; padding: 1.5rem; border-radius: 1rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; box-sizing: border-box; }
         .tarjeta:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         .tarjeta-header { display: flex; justify-content: space-between; align-items: start; gap: 0.75rem; }
         .tarjeta h3 { margin: 0; font-size: 1.25rem; font-weight: 700; color: #111827; }
@@ -57,10 +56,10 @@
 
     <main>
         <div class="panel">
-            <!-- Selector de Ciudad + Botón Consulta -->
             <div class="campo">
                 <div>
                     <label>📍 1. Elige una Ciudad:</label>
+                    <!-- CORREGIDO: Eliminada la llamada a la función inexistente al cambiar de opción -->
                     <select id="selectorCiudad">
                         <option value="" disabled selected>Selecciona tu destino...</option>
                         <option value="bruselas">Bruselas</option>
@@ -71,19 +70,16 @@
                 <button class="btn-buscar" onclick="lanzarConsulta()">🔍 Consultar Lugares</button>
             </div>
 
-            <!-- Buscador en Tiempo Real -->
             <div class="campo" style="justify-content: flex-start;">
                 <label class="gris">🔍 2. Filtrar resultados por texto:</label>
                 <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Panadería, Domino's...">
             </div>
         </div>
 
-        <!-- Barra de Estado -->
         <div id="mensajeEstado">
             💡 Selecciona una ciudad en el menú desplegable y pulsa el botón naranja para buscar.
         </div>
 
-        <!-- Contenedor de Tarjetas -->
         <div>
             <h2 id="tituloResultados" class="titulo">📍 Sitios sin Gluten Encontrados</h2>
             <div id="listaLugares" class="grid-tarjetas"></div>
@@ -97,7 +93,6 @@
 
         let lugaresActuales = [];
 
-        // Esta función se ejecuta únicamente al hacer clic en el botón naranja
         async function lanzarConsulta() {
             const ciudad = document.getElementById('selectorCiudad').value;
             const mensajeEstado = document.getElementById('mensajeEstado');
@@ -105,20 +100,23 @@
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            if (!ciudad) {
+            if (!city || city === "") {
                 mensajeEstado.className = "error";
                 mensajeEstado.innerHTML = "⚠️ Por favor, selecciona primero una ciudad en el menú desplegable.";
                 return;
             }
+
+            // Fallback de seguridad si JavaScript procesa la variable global de ventana 'city'
+            const ciudadClave = ciudad || document.getElementById('selectorCiudad').value;
 
             buscador.value = '';
             contenedor.innerHTML = '';
             tituloResultados.style.display = 'none';
 
             mensajeEstado.className = "carga";
-            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${ciudad.toUpperCase()}</b> desde tu GitHub...`;
+            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${ciudadClave.toUpperCase()}</b> desde GitHub...`;
 
-            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
+            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudadClave}.json`;
 
             try {
                 const respuesta = await fetch(urlJson);
@@ -126,10 +124,10 @@
 
                 const datosGeoJson = await respuesta.json();
                 
-                // CORRECCIÓN CLAVE: Mapeo exacto indexando los valores numéricos de las coordenadas
+                // Mapeo adaptado con índices correctos para evitar congelamientos en el bucle principal [longitud, latitud]
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
-                    const coords = feature.geometry && feature.geometry.coordinates ? feature.geometry.coordinates : [0, 0]; 
+                    const coords = (feature.geometry && feature.geometry.coordinates) ? feature.geometry.coordinates :; 
 
                     let calle = prop["addr:street"] || "";
                     let numero = prop["addr:housenumber"] || "";
@@ -138,7 +136,7 @@
                     if (prop["addr:city"]) {
                         direccionFinal += `, ${prop["addr:city"]}`;
                     } else {
-                        direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
+                        direccionFinal += `, ${ciudadClave.charAt(0).toUpperCase() + ciudadClave.slice(1)}`;
                     }
 
                     let categoria = "Restaurante";
@@ -155,4 +153,3 @@
                     if (prop.takeaway === "only") opcionesAdicionales.push("Solo para llevar");
                     
                     let notaFinal = opcionesAdicionales.length > 0 
-                        ? `Opciones: ${opcionesAdicionales.join(", ")}.` 

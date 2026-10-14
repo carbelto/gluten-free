@@ -11,7 +11,7 @@
 
     <!-- Encabezado Principal -->
     <header class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-10 shadow-lg text-center">
-        <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-sm">🇧🇪 Guía Sin Gluten</h1>
+        <h1 class="text-4xl font-extrabold tracking-wide drop-shadow-xs">🇧🇪 Guía Sin Gluten</h1>
         <p class="text-emerald-100 mt-2 text-lg">Tu comida segura en Bruselas, Gante y Brujas</p>
     </header>
 
@@ -36,16 +36,16 @@
             <!-- Buscador en Tiempo Real -->
             <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <label class="block text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">
-                    🔍 Filtrar en tiempo real:
+                    🔍 Filtrar por nombre o tipo:
                 </label>
-                <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Panadería, Nombre..." class="w-full p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder-gray-400">
+                <input type="text" id="buscador" oninput="filtrarLugares()" placeholder="Ej. Pizza, Panadería, Domino's..." class="w-full p-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder-gray-400">
             </div>
 
         </div>
 
-        <!-- BARRA DE ESTADO / MENSAJES INFORMATIVOS -->
+        <!-- BARRA DE ESTADO -->
         <div id="mensajeEstado" class="text-center py-4 px-6 text-gray-600 bg-amber-50 border border-amber-200 rounded-xl mb-8 font-medium shadow-sm transition-all">
-            💡 Selecciona una ciudad arriba para mostrar los restaurantes automáticamente.
+            💡 Selecciona una ciudad en el menú desplegable para ver sus lugares sin gluten automáticamente.
         </div>
 
         <!-- CONTENEDOR DE TARJETAS (Resultados) -->
@@ -61,16 +61,16 @@
     <script>
         // =========================================================================
         // ⚙️ CONFIGURACIÓN DE TU REPOSITORIO DE GITHUB
-        // Reemplaza estos valores con tus datos reales de GitHub para conectar los archivos
+        // Configura tus datos reales para enlazar las descargas automáticas
         // =========================================================================
-        const GITHUB_USER = "TU_USUARIO_DE_GITHUB"; 
-        const GITHUB_REPO = "NOMBRE_DE_TU_REPOSITORIO";
+        const GITHUB_USER = "carbelto"; 
+        const GITHUB_REPO = "gluten-free";
         const GITHUB_BRANCH = "main"; // Cambia a "master" si tu rama principal se llama así
         // =========================================================================
 
         let lugaresActuales = [];
 
-        // Descarga el JSON desde tu GitHub de forma automática e invisible al seleccionar la ciudad
+        // Descarga el JSON real de tu GitHub de forma automática al pulsar la ciudad
         async function cambiarCiudad() {
             const ciudad = document.getElementById('selectorCiudad').value;
             const mensajeEstado = document.getElementById('mensajeEstado');
@@ -78,43 +78,46 @@
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            // Limpiar la pantalla
+            // Limpiar interfaz
             buscador.value = '';
             contenedor.innerHTML = '';
             tituloResultados.classList.add('hidden');
 
-            // Mensaje de carga transitorio
+            // Estado visual transitorio de carga
             mensajeEstado.className = "text-center py-4 px-6 text-blue-800 bg-blue-50 border border-blue-200 rounded-xl mb-8 font-semibold animate-pulse";
-            mensajeEstado.innerHTML = `⏳ Conectando con tu repositorio y cargando locales de <b>${ciudad.toUpperCase()}</b>...`;
+            mensajeEstado.innerHTML = `⏳ Descargando de tu repositorio los locales de <b>${ciudad.toUpperCase()}</b>...`;
 
-            // URL directa al archivo sin intervención del usuario
+            // Enlace directo al formato Raw del archivo público en GitHub
             const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
 
             try {
                 const respuesta = await fetch(urlJson);
                 
                 if (!respuesta.ok) {
-                    throw new Error(`No se pudo acceder al archivo lugares_${ciudad}.json`);
+                    throw new Error(`Error HTTP: ${respuesta.status}`);
                 }
 
-                // El navegador procesa el FeatureCollection original de OpenStreetMap
+                // El navegador lee el archivo GeoJSON puro exportado de Overpass-Turbo
                 const datosGeoJson = await respuesta.json();
                 
-                // Transforma el mapa en un formato limpio para las tarjetas de la interfaz
+                // Mapeo nativo de la estructura real del archivo (features -> properties)
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
-                    const coords = feature.geometry.coordinates; // [longitud, latitud]
+                    const coords = feature.geometry.coordinates; // Formato original: [longitud, latitud]
 
-                    // Unificar textos de la dirección postal
-                    let direccionFinal = prop["addr:street"] || "";
-                    if (prop["addr:housenumber"]) direccionFinal += ` ${prop["addr:housenumber"]}`;
+                    // Construcción automática de la dirección
+                    let calle = prop["addr:street"] || "";
+                    let numero = prop["addr:housenumber"] || "";
+                    let direccionFinal = calle;
+                    if (numero) direccionFinal += ` ${numero}`;
                     if (prop["addr:city"]) {
                         direccionFinal += `, ${prop["addr:city"]}`;
                     } else {
+                        // En su defecto, añade la ciudad seleccionada con la primera letra en mayúscula
                         direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
                     }
 
-                    // Identificar categorías del mapa original
+                    // Traducción automática de tipos de establecimiento de OpenStreetMap
                     let categoria = "Restaurante";
                     if (prop.shop === "bakery" || prop.shop === "pastry") categoria = "Panadería";
                     else if (prop.amenity === "cafe") categoria = "Cafetería";
@@ -122,43 +125,42 @@
                     else if (prop.cuisine === "pizza") categoria = "Pizzería";
                     else if (prop.cuisine === "burger") categoria = "Hamburguesería";
 
-                    // Generar notas dinámicas de alérgenos y dietas
-                    let notasArray = [];
-                    if (prop["diet:lactose_free"] === "yes") notasArray.push("Sin lactosa");
-                    if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") notasArray.push("Vegano");
-                    if (prop["diet:vegetarian"] === "yes" || prop["diet:vegetarian"] === "only") notasArray.push("Vegetariano");
-                    if (prop.takeaway === "only") notasArray.push("Solo para llevar");
+                    // Extracción de etiquetas para la caja de notas adicionales
+                    let opcionesAdicionales = [];
+                    if (prop["diet:lactose_free"] === "yes") opcionesAdicionales.push("Sin lactosa");
+                    if (prop["diet:vegan"] === "yes" || prop["diet:vegan"] === "only") opcionesAdicionales.push("Vegano");
+                    if (prop["diet:vegetarian"] === "yes" || prop["diet:vegetarian"] === "only") opcionesAdicionales.push("Vegetariano");
+                    if (prop.takeaway === "only") opcionesAdicionales.push("Solo para llevar");
                     
-                    let notaFinal = notasArray.length > 0 
-                        ? `Opciones: ${notasArray.join(", ")}.` 
-                        : "Opciones sin gluten verificadas.";
+                    let notaFinal = opcionesAdicionales.length > 0 
+                        ? `Opciones detectadas: ${opcionesAdicionales.join(", ")}.` 
+                        : "Establecimiento con opciones sin gluten verificadas.";
 
                     return {
-                        nombre: prop.name || "Establecimiento sin nombre",
+                        nombre: prop.name || "Establecimiento",
                         categoria: categoria,
                         direccion: direccionFinal,
                         nota: notaFinal,
-                        lat: coords[1], // Latitud (corregido el orden del GeoJSON)
-                        lon: coords[0]  // Longitud
+                        lat: coords[1], // Latitud (segundo elemento del par)
+                        lon: coords[0]  // Longitud (primer elemento del par)
                     };
                 });
 
-                // Mostrar el título de resultados y actualizar banner de estado
+                // Mostrar interfaz completa
                 tituloResultados.classList.remove('hidden');
                 mensajeEstado.className = "text-center py-4 px-6 text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl mb-8 font-semibold shadow-sm";
-                mensajeEstado.innerHTML = `🎉 ¡Listo! Se han cargado <b>${lugaresActuales.length} locales</b> de forma automática desde tu GitHub.`;
+                mensajeEstado.innerHTML = `🎉 ¡Conexión con GitHub exitosa! Mostrando <b>${lugaresActuales.length} locales</b> en <b>${ciudad.toUpperCase()}</b>.`;
 
-                // Renderizar las tarjetas
                 mostrarLugares(lugaresActuales);
 
             } catch (error) {
                 mensajeEstado.className = "text-center py-4 px-6 text-red-800 bg-red-50 border border-red-200 rounded-xl mb-8 font-semibold";
-                mensajeEstado.innerHTML = `❌ <b>Error de sincronización:</b> No se ha podido leer el archivo. Revisa que tu repositorio de GitHub sea <b>Público</b> y que las variables del script contengan tu usuario y repositorio exactos.`;
-                console.error(error);
+                mensajeEstado.innerHTML = `❌ <b>Error automático:</b> No se ha podido leer tu archivo de GitHub. Comprueba que tu repositorio sea <b>Público</b> y que hayas escrito correctamente tu usuario y repositorio en el script.`;
+                console.error("Detalle del error:", error);
             }
         }
 
-        // Renderiza las tarjetas de los locales en el HTML
+        // Renderiza de forma dinámica las tarjetas de los restaurantes
         function mostrarLugares(lugares) {
             const contenedor = document.getElementById('listaLugares');
             contenedor.innerHTML = '';
@@ -169,10 +171,7 @@
             }
 
             lugares.forEach(lugar => {
-                // Al usar las coordenadas exactas obtenidas del JSON, Google Maps te lleva al punto exacto
+                // Al usar las coordenadas exactas de latitud y longitud, el enlace a Maps es infalible
                 const urlMaps = `https://google.com{lugar.lat},${lugar.lon}`;
 
                 const tarjeta = `
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group">
-                        <div>
-                            <div class="flex justify-between items-start gap-3">

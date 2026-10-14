@@ -59,7 +59,6 @@
             <div class="campo">
                 <div>
                     <label>📍 1. Elige una Ciudad:</label>
-                    <!-- CORREGIDO: Eliminada la llamada a la función inexistente al cambiar de opción -->
                     <select id="selectorCiudad">
                         <option value="" disabled selected>Selecciona tu destino...</option>
                         <option value="bruselas">Bruselas</option>
@@ -100,23 +99,21 @@
             const buscador = document.getElementById('buscador');
             const contenedor = document.getElementById('listaLugares');
 
-            if (!city || city === "") {
+            // CORREGIDO: Se unificó la comprobación usando la variable correcta en español 'ciudad'
+            if (!ciudad || ciudad === "") {
                 mensajeEstado.className = "error";
                 mensajeEstado.innerHTML = "⚠️ Por favor, selecciona primero una ciudad en el menú desplegable.";
                 return;
             }
-
-            // Fallback de seguridad si JavaScript procesa la variable global de ventana 'city'
-            const ciudadClave = ciudad || document.getElementById('selectorCiudad').value;
 
             buscador.value = '';
             contenedor.innerHTML = '';
             tituloResultados.style.display = 'none';
 
             mensajeEstado.className = "carga";
-            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${ciudadClave.toUpperCase()}</b> desde GitHub...`;
+            mensajeEstado.innerHTML = `⏳ Descargando base de datos de <b>${ciudad.toUpperCase()}</b> desde GitHub...`;
 
-            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudadClave}.json`;
+            const urlJson = `https://githubusercontent.com{GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/lugares_${ciudad}.json`;
 
             try {
                 const respuesta = await fetch(urlJson);
@@ -124,7 +121,7 @@
 
                 const datosGeoJson = await respuesta.json();
                 
-                // Mapeo adaptado con índices correctos para evitar congelamientos en el bucle principal [longitud, latitud]
+                // Mapeo estable indexando los valores numéricos del array de geometría original de OpenStreetMap
                 lugaresActuales = datosGeoJson.features.map(feature => {
                     const prop = feature.properties;
                     const coords = (feature.geometry && feature.geometry.coordinates) ? feature.geometry.coordinates :; 
@@ -136,7 +133,7 @@
                     if (prop["addr:city"]) {
                         direccionFinal += `, ${prop["addr:city"]}`;
                     } else {
-                        direccionFinal += `, ${ciudadClave.charAt(0).toUpperCase() + ciudadClave.slice(1)}`;
+                        direccionFinal += `, ${ciudad.charAt(0).toUpperCase() + ciudad.slice(1)}`;
                     }
 
                     let categoria = "Restaurante";
@@ -153,3 +150,7 @@
                     if (prop.takeaway === "only") opcionesAdicionales.push("Solo para llevar");
                     
                     let notaFinal = opcionesAdicionales.length > 0 
+                        ? `Opciones: ${opcionesAdicionales.join(", ")}.` 
+                        : "Establecimiento con opciones sin gluten verificadas.";
+
+                    // En GeoJSON estándar, el índice 1 es Latitud y el índice 0 es Longitud

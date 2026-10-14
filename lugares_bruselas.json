@@ -14,7 +14,8 @@
         "diet:gluten_free": "yes",
         "website": "https://chambelland.com",
         "distancia_centro": "2.8 km",
-        "note": "Panadería 100% libre de gluten. Comentario usuario: 'Increíble y deliciosa selección de pan y pastelería sin gluten. Un paraíso total para cualquier celíaco.'"
+        "nota_local": "Panadería 100% libre de gluten.",
+        "nota_usuario": "Google: ⭐ 4.6. Opinión: 'Un paraíso absoluto para celíacos. El pan de trigo sarraceno y la bollería son espectaculares, todo el obrador es 100% libre de gluten y seguro.'"
       },
       "geometry": {
         "type": "Point",
@@ -33,7 +34,8 @@
         "diet:gluten_free": "yes",
         "diet:vegan": "only",
         "distancia_centro": "150 m",
-        "note": "Cafetería pequeña de gofres para llevar. Comentario usuario: '¡Los mejores gofres sin gluten y veganos de Bruselas! Los hacen al momento, súper frescos y crujientes.'"
+        "nota_local": "Cafetería pequeña de gofres para llevar.",
+        "nota_usuario": "Google: ⭐ 4.7. Opinión: 'Los mejores gofres sin gluten y veganos que probarás en Bélgica. Crujientes por fuera, tiernos por dentro y hechos al momento de forma segura.'"
       },
       "geometry": {
         "type": "Point",
@@ -50,9 +52,10 @@
         "addr:city": "Brussel",
         "diet:gluten_free": "yes",
         "diet:vegetarian": "yes",
-        "website": "https://cafedemarkten.be",
+        "website": "https://thesistercafe-brussels.com",
         "distancia_centro": "80 m",
-        "note": "Cafetería ecológica céntrica. Comentario usuario: 'Sitio excelente para celíacos. Todo es 100% sin gluten y seguro. Tienen pan, focaccias y hasta cerveza de grifo sin gluten.'"
+        "nota_local": "Cafetería ecológica céntrica.",
+        "nota_usuario": "Google: ⭐ 4.3. Opinión: 'Súper cerca de la Grand-Place. Menú bio muy amplio y adaptado, tienen pan de focaccia casero sin gluten delicioso y cerveza artesana apta.'"
       },
       "geometry": {
         "type": "Point",
@@ -71,7 +74,8 @@
         "diet:gluten_free": "yes",
         "diet:organic": "yes",
         "distancia_centro": "350 m",
-        "note": "Restaurante de cocina orgánica de inspiración libanesa. Comentario usuario: 'Platos frescos, ambiente acogedor y excelente etiquetado de alérgenos seguros sin gluten.'"
+        "nota_local": "Restaurante de cocina orgánica de inspiración libanesa.",
+        "nota_usuario": "Google: ⭐ 4.5. Opinión: 'Comida libanesa y marroquí orgánica excelente. El personal te explica de maravilla los alérgenos y casi toda la carta es apta de forma natural.'"
       },
       "geometry": {
         "type": "Point",
@@ -89,7 +93,8 @@
         "addr:city": "Etterbeek",
         "diet:gluten_free": "yes",
         "distancia_centro": "3.1 km",
-        "note": "Restaurante italiano clásico. Comentario usuario: 'Tienen un menú específico con pizzas y pasta fresca sin gluten espectaculares hechas de forma casera.'"
+        "nota_local": "Restaurante italiano clásico.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Tienen un menú sin gluten independiente preparado con mucho cuidado. Las pizzas y los platos de pasta con salsas caseras merecen totalmente el viaje.'"
       },
       "geometry": {
         "type": "Point",
@@ -107,7 +112,8 @@
         "addr:city": "Ixelles",
         "diet:gluten_free": "yes",
         "distancia_centro": "1.6 km",
-        "note": "Sitio de comida rápida gourmet. Comentario usuario: 'Hamburguesas artesanales brutales. Tienen pan sin gluten muy bien logrado y adaptan casi cualquier opción.'"
+        "nota_local": "Sitio de comida rápida gourmet.",
+        "nota_usuario": "Google: ⭐ 4.4. Opinión: 'Hamburguesas gourmet espectaculares. Disponen de un pan sin gluten exquisito que no se rompe y un protocolo muy estricto en cocina para alérgenos.'"
       },
       "geometry": {
         "type": "Point",
